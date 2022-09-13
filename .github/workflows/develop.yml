@@ -68,7 +68,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd ~/hairshop-server
-            docker pull tjsry0466/hairshop-server:develop
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/hairshop-server:develop
             docker stop dev-hairshop-server
             docker rm dev-hairshop-server
             docker run -d --name dev-hairshop-server --restart=always -p 3200:3200 tjsry0466/hairshop-server:develop
