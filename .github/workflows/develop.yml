@@ -58,3 +58,17 @@ jobs:
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
+
+      - name: Deploy Hairshop Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd ~/hairshop-server
+            docker pull tjsry0466/hairshop-server:develop
+            docker stop dev-hairshop-server
+            docker rm dev-hairshop-server
+            docker run -d --name dev-hairshop-server --restart=always -p 3200:3200 tjsry0466/hairshop-server:develop
