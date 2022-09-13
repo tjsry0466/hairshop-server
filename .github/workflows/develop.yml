@@ -35,7 +35,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: tjsry0466/hairshop-server
+          images: ${{ secrets.DOCKERHUB_USERNAME}}/hairshop-server
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
