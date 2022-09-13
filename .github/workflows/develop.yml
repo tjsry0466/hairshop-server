@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Use Node.js
@@ -30,7 +30,7 @@ jobs:
 
       - run: |
           yarn install --frozen-lockfile
-          
+
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
