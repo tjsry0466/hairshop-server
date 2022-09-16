@@ -68,7 +68,10 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd ~/hairshop-server
+            cat ~/docker_password.txt | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/hairshop-server:develop
             docker stop dev-hairshop-server
             docker rm dev-hairshop-server
-            docker run -d --name dev-hairshop-server --restart=always -p 3200:3200 tjsry0466/hairshop-server:develop
+            docker run -d --name dev-hairshop-server --restart=always -p 3200:3200 ${{ secrets.DOCKERHUB_USERNAME }}/hairshop-server:develop
+            docker cp ~/hairshop-server/local.js dev-hairshop-server:/var/www/html/config/local.js
+            docker cp ~/hairshop-server/ormconfig.json dev-hairshop-server:/var/www/html/ormconfig.json

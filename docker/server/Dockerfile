@@ -12,4 +12,4 @@ RUN yarn build
 ENV HOST 0.0.0.0
 EXPOSE 3200
 
-CMD ["yarn", "start:dev"]
+CMD ["yarn", "start"]
