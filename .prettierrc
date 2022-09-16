@@ -1,4 +1,18 @@
 {
+  "printWidth": 100,
   "singleQuote": true,
-  "trailingComma": "all"
+  "tabWidth": 2,
+  "useTabs": false,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "semi": true,
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": ["error-messages.ts"],
+      "options": {
+        "printWidth": 1000
+      }
+    }
+  ]
 }
