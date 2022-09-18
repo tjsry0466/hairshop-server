@@ -1,4 +1,4 @@
-name: Linting and testing and graphql check
+name: Linting and testing
 
 on:
   pull_request:
