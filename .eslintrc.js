@@ -37,6 +37,7 @@ module.exports = {
     'import/no-duplicates': ['error', { considerQueryString: true }],
     'import/first': 1,
     'import/named': 1,
+    'import/export': 0,
     'import/order': [
       'error',
       {
@@ -55,7 +56,7 @@ module.exports = {
     'no-console': 'error',
     '@typescript-eslint/no-unused-vars': 'off',
     // FIXME: nest 모듈이 지워지는 이슈가 있어 주석처리 합니다.
-    // 'unused-imports/no-unused-imports': 'warn',
+    // 'unused-imports/no-unused-imports': 'error',
     // 'unused-imports/no-unused-vars': [
     //   'error',
     //   {
