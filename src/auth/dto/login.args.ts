@@ -1,5 +1,5 @@
-import { ArgsType, Field } from "@nestjs/graphql";
-import { IsEmail, IsNotEmpty, MaxLength } from "class-validator";
+import { ArgsType, Field } from '@nestjs/graphql';
+import { IsEmail, IsNotEmpty, MaxLength } from 'class-validator';
 
 @ArgsType()
 export class LoginArgs {
