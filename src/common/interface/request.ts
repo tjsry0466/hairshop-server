@@ -1,6 +1,6 @@
 import { Role } from '../enum';
 
-export type User = {
+export type IUser = {
   id: number;
   role: Role;
   exp: number;
@@ -8,7 +8,7 @@ export type User = {
 };
 
 export interface IRequest {
-  user?: string; // FIXME: 유저 엔티티 작성 후에 변경 필요
+  user?: IUser;
   ip: string;
   userAgent: string;
 }

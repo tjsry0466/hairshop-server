@@ -1,9 +1,4 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { ArgumentsHost, ExceptionFilter, InternalServerErrorException } from '@nestjs/common';
 import { TypeORMError } from 'typeorm';
 
 import { isProd } from '../constant';

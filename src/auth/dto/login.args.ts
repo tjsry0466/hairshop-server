@@ -1,6 +1,3 @@
-import { ArgsType, Field } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty, MaxLength } from 'class-validator';
-
 @ArgsType()
 export class LoginArgs {
   @IsEmail({}, { message: '이메일 형식이어야 합니다.' })
