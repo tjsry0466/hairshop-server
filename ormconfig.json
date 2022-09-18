@@ -1,0 +1,17 @@
+{
+  "type": "mysql",
+  "host": "hairshop.ch8c8ketmz5r.ap-northeast-2.rds.amazonaws.com",
+  "port": 3306,
+  "username": "admin",
+  "password": "!Jk14682533",
+  "database": "hairshop",
+  "entities": ["src/**/entity/**/*.entity.{ts,js}"],
+  "migrations": ["src/migration/*.{ts,js}"],
+  "migrationsRun": true,
+  "cli": {
+    "migrationsDir": "src/migration"
+  },
+  "logging": ["schema", "warn", "error"],
+  "logger": "advanced-console",
+  "synchronize": false
+}
