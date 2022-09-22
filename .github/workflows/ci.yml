@@ -1,0 +1,51 @@
+name: Linting and testing
+
+on:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [16.x]
+
+    services:
+      redis:
+        image: redis
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 3
+        ports:
+          - 6379:6379
+
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: test
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 3
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v1
+        id: yarn-cache # https://dev.to/mpocock1/how-to-cache-nodemodules-in-github-actions-with-yarn-24eh
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install packages
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Run linter
+        run: yarn lint
+
+      - name: Run unit tests
+        run: yarn test:cov
