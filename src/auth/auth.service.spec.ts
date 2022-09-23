@@ -138,7 +138,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('동일한 유저가 존재하면 에러를 반환해야 한다.', async () => {
+    it('동일한 이메일이 존재하는 경우', async () => {
       // given
       const signupArgs = {
         email: 'pirit.test@kyojs.com',
