@@ -5,7 +5,7 @@ import { RequestInfo, Roles } from '../common/decorator';
 import { Role } from '../common/enum';
 import { IRequest } from '../common/interface';
 import { AuthService } from './auth.service';
-import { LoginArgs, TokenOutput } from './dto';
+import { LoginArgs, SignupArgs, SignupOutput, TokenOutput } from './dto';
 
 @Resolver()
 export class AuthResolver {
@@ -29,5 +29,10 @@ export class AuthResolver {
     }
 
     return this.authService.loginByRefreshToken(req.user);
+  }
+
+  @Mutation(() => SignupOutput)
+  async signup(@Args() args: SignupArgs) {
+    return this.authService.signup(args);
   }
 }

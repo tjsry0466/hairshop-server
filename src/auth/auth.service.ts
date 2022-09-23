@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { Role } from '../common/enum';
 import { Exceptions } from '../common/exceptions';
 import * as request from '../common/interface/request';
+import { IAddUser } from '../user/interface/add-user.interface';
 import { UserService } from '../user/user.service';
 import { LoginArgs, TokenOutput } from './dto';
 
@@ -40,11 +41,17 @@ export class AuthService {
     return this.signJsonWebToken(user.id, user.role);
   }
 
-  private async validateLoginInfo(inputPassword: string, userPassword?: string) {
-    if (!userPassword) {
-      return false;
+  private async validateLoginInfo(inputPassword: string, userPassword: string) {
+    return bcrypt.compare(inputPassword, userPassword);
+  }
+
+  async signup(args: IAddUser) {
+    const existsUser = await this.userService.getUserByEmail(args.email);
+    if (existsUser) {
+      throw Exceptions.alreadyExistsEmailError;
     }
 
-    return bcrypt.compare(inputPassword, userPassword);
+    const user = await this.userService.addUser(args);
+    return { ...this.signJsonWebToken(user.id, Role.USER), user };
   }
 }
