@@ -10,6 +10,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { isProd } from './common/constant';
 import { TypeORMExceptionFilter } from './common/filter/typeorm-exception.filter';
+import { ShopModule } from './shop/shop.module';
+import { DesignerModule } from './designer/designer.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { TypeORMExceptionFilter } from './common/filter/typeorm-exception.filter
           migrations: [__dirname + '/migration/*.{ts,js}'],
         }),
     }),
+    ShopModule,
+    DesignerModule,
   ],
   controllers: [AppController],
   providers: [
