@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcrypt';
 
 import { jwtData } from '../../test/data/jwt.data.mock';
+import { userData } from '../../test/data/user.data.mock';
 import { MockJwtService } from '../../test/service/jwt.service.mock';
 import { MockUserService } from '../../test/service/user.service.mock';
 import { Role } from '../common/enum';
@@ -111,6 +112,46 @@ describe('AuthService', () => {
       });
       expect(userService.getUserForLogin).toBeCalledTimes(1);
       expect(userService.getUserForLogin).toBeCalledWith(loginArg.email);
+    });
+  });
+
+  describe('signup()', () => {
+    it('normal case', async () => {
+      // given
+      jest.spyOn(userService, 'getUserByEmail').mockResolvedValue(undefined);
+      const { id, ...user } = userData()[0];
+      const signupArgs = user;
+
+      // when
+      const signupOutput = await service.signup(signupArgs);
+
+      // then
+      expect(userService.getUserByEmail).toBeCalledTimes(1);
+      expect(userService.getUserByEmail).toBeCalledWith(signupArgs.email);
+      expect(userService.addUser).toBeCalledTimes(1);
+      expect(userService.addUser).toBeCalledWith(signupArgs);
+      expect(service.signJsonWebToken).toBeCalledTimes(1);
+      expect(signupOutput).toEqual({
+        accessToken: jwtData().accessToken,
+        refreshToken: jwtData().refreshToken,
+        user: { id, ...user, password: 'hashedPassword' },
+      });
+    });
+
+    it('동일한 유저가 존재하면 에러를 반환해야 한다.', async () => {
+      // given
+      const signupArgs = {
+        email: 'pirit.test@kyojs.com',
+        password: '12345678',
+        name: 'pirit',
+      };
+
+      // when - then
+      await expect(service.signup(signupArgs)).rejects.toThrow(Exceptions.alreadyExistsEmailError);
+      expect(userService.getUserByEmail).toBeCalledTimes(1);
+      expect(userService.getUserByEmail).toBeCalledWith(signupArgs.email);
+      expect(userService.addUser).not.toBeCalled();
+      expect(service.signJsonWebToken).not.toBeCalled();
     });
   });
 });
