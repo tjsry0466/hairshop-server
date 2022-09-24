@@ -48,7 +48,7 @@ export class AuthService {
   async signup(args: IAddUser) {
     const existsUser = await this.userService.getUserByEmail(args.email);
     if (existsUser) {
-      throw Exceptions.alreadyExistsEmailError;
+      throw Exceptions.emailAlreadyExistsError;
     }
 
     const user = await this.userService.addUser(args);

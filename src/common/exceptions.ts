@@ -8,8 +8,8 @@ import {
 import { ErrorMessages } from './error-messages';
 
 export class Exceptions {
-  static readonly alreadyExistsEmailError = new BadRequestException(
-    ErrorMessages.alreadyExistsEmailErrorMessage,
+  static readonly emailAlreadyExistsError = new BadRequestException(
+    ErrorMessages.emailAlreadyExistsErrorMessage,
   );
 
   static readonly fallback = new InternalServerErrorException(ErrorMessages.default);

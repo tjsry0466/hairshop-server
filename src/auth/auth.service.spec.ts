@@ -147,7 +147,7 @@ describe('AuthService', () => {
       };
 
       // when - then
-      await expect(service.signup(signupArgs)).rejects.toThrow(Exceptions.alreadyExistsEmailError);
+      await expect(service.signup(signupArgs)).rejects.toThrow(Exceptions.emailAlreadyExistsError);
       expect(userService.getUserByEmail).toBeCalledTimes(1);
       expect(userService.getUserByEmail).toBeCalledWith(signupArgs.email);
       expect(userService.addUser).not.toBeCalled();
