@@ -1,37 +1,33 @@
-import { NotImplementedException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { RequestInfo, Roles } from '../common/decorator';
 import { Role } from '../common/enum';
 import { IRequest } from '../common/interface';
-import { LoginArgs, SignupInput, SignupOutput, TokenOutput } from './dto';
+import { AuthService } from './auth.service';
+import { LoginArgs, TokenOutput } from './dto';
 
 @Resolver()
 export class AuthResolver {
+  constructor(private readonly authService: AuthService) {}
+
   @Query(() => Boolean)
   async test() {
     return true;
   }
 
   @Mutation(() => TokenOutput)
-  async login(@Args() loginArg: LoginArgs, @RequestInfo() req: IRequest) {
-    throw new NotImplementedException();
-  }
-
-  @Roles(Role.USER)
-  @Mutation(() => Boolean)
-  async logout(@RequestInfo() req: Required<IRequest>) {
-    throw new NotImplementedException();
+  async login(@Args() loginArg: LoginArgs) {
+    return this.authService.login(loginArg);
   }
 
   @Roles(Role.USER)
   @Mutation(() => TokenOutput)
   async loginByRefreshToken(@RequestInfo() req: Required<IRequest>) {
-    throw new NotImplementedException();
-  }
+    if (!req.user.refresh) {
+      throw new UnauthorizedException();
+    }
 
-  @Mutation(() => SignupOutput)
-  async signup(@Args('user') input: SignupInput, @RequestInfo() req: IRequest) {
-    throw new NotImplementedException();
+    return this.authService.loginByRefreshToken(req.user);
   }
 }
