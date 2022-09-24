@@ -4,6 +4,10 @@ import { User } from '../entity/user.entity';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+  async getOneById(id: number) {
+    return this.findOne(id);
+  }
+
   async getUserForLogin(email: string): Promise<Pick<User, 'id' | 'password'> | undefined> {
     return this.createQueryBuilder('user')
       .select('user.id')
