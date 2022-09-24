@@ -22,13 +22,13 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async login(loginArg: LoginArgs) {
-    const user = await this.userService.getUserForLogin(loginArg.email);
+  async login(loginArgs: LoginArgs) {
+    const user = await this.userService.getUserForLogin(loginArgs.email);
     if (!user) {
       throw Exceptions.userNotFoundError;
     }
 
-    const validateResult = await this.validateLoginInfo(loginArg.password, user.password);
+    const validateResult = await bcrypt.compare(loginArgs.password, user.password);
     if (!validateResult) {
       throw Exceptions.invalidPasswordError;
     }
@@ -38,13 +38,5 @@ export class AuthService {
 
   async loginByRefreshToken(user: request.IUser): Promise<TokenOutput> {
     return this.signJsonWebToken(user.id, user.role);
-  }
-
-  private async validateLoginInfo(inputPassword: string, userPassword?: string) {
-    if (!userPassword) {
-      return false;
-    }
-
-    return bcrypt.compare(inputPassword, userPassword);
   }
 }

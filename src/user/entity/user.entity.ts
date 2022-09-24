@@ -12,8 +12,8 @@ export class User {
   @Column({ length: 255 })
   email: string;
 
-  @Column({ length: 255, nullable: true, select: false })
-  password?: string;
+  @Column({ length: 255, select: false })
+  password: string;
 
   @Field()
   @Column({ length: 20 })
