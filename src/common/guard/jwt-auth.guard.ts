@@ -48,8 +48,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   getRequest(context: ExecutionContext) {
-    return context.getType() === 'http'
-      ? context.switchToHttp().getRequest()
-      : GqlExecutionContext.create(context).getContext().req;
+    return GqlExecutionContext.create(context).getContext().req;
   }
 }
