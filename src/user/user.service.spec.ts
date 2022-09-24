@@ -43,4 +43,20 @@ describe('UserService', () => {
       expect(userRepository.getUserForLogin).toBeCalledWith(email);
     });
   });
+
+  describe('getUserById()', () => {
+    it('normal case', async () => {
+      // given
+      const id = 1;
+
+      // when
+      const result = await service.getUserById(id);
+
+      // then
+      const user = userData()[0];
+      expect(result).toEqual(user);
+      expect(userRepository.getOneById).toBeCalledTimes(1);
+      expect(userRepository.getOneById).toBeCalledWith(id);
+    });
+  });
 });
