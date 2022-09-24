@@ -11,7 +11,6 @@ import { UserService } from './user.service';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Roles(Role.USER)
   @Query(() => User)
   async user(@Args() args: IdArgs) {
     return this.userService.getUserById(args.id);
