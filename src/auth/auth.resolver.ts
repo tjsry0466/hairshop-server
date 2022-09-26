@@ -1,5 +1,5 @@
 import { UnauthorizedException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import { RequestInfo, Roles } from '../common/decorator';
 import { Role } from '../common/enum';
@@ -10,11 +10,6 @@ import { LoginArgs, SignupArgs, SignupOutput, TokenOutput } from './dto';
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
-
-  @Query(() => Boolean)
-  async test() {
-    return true;
-  }
 
   @Mutation(() => TokenOutput)
   async login(@Args() loginArg: LoginArgs) {

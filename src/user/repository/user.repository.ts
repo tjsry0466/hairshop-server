@@ -5,6 +5,10 @@ import { IAddUser } from '../interface/add-user.interface';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+  async getOneById(id: number) {
+    return this.findOne(id);
+  }
+
   async getOneByEmail(email: string) {
     return this.findOne({ email });
   }
