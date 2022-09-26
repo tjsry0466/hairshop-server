@@ -26,9 +26,10 @@ export class Designer {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field({ description: '아이디' })
-  @Column({ length: 100 })
-  username: string;
+  @Index('email')
+  @Field({ description: '이메일' })
+  @Column({ length: 255 })
+  email: string;
 
   @Field({ description: '비밀번호' })
   @Column()
@@ -36,7 +37,7 @@ export class Designer {
 
   @Index('shopId')
   @Field(() => Int, { nullable: true, description: '근무하는 가게 id' })
-  @Column({ nullable: true })
+  @Column({ nullable: true, unsigned: true })
   shopId?: number;
 
   @Field({ defaultValue: '닉네임' })
@@ -64,7 +65,7 @@ export class Designer {
   longIntro?: string;
 
   @Field(() => Int, { description: '근속년차' })
-  @Column({ default: 1 })
+  @Column({ default: 1, unsigned: true })
   careerYear: number;
 
   @Field(() => DAY_OF_WEEK, { description: '정기 휴무 요일' })
@@ -72,15 +73,15 @@ export class Designer {
   regularHoliday: DAY_OF_WEEK[];
 
   @Field(() => Int, { description: '스타일 개수' })
-  @Column({ default: 0 })
+  @Column({ default: 0, unsigned: true })
   styleCount: number;
 
   @Field(() => Int, { description: '좋아요 개수' })
-  @Column({ default: 0 })
+  @Column({ default: 0, unsigned: true })
   likeCount: number;
 
   @Field(() => Int, { description: '리뷰 개수' })
-  @Column({ default: 0 })
+  @Column({ default: 0, unsigned: true })
   reviewCount: number;
 
   @CreateDateColumn()

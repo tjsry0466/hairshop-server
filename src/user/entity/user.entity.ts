@@ -4,12 +4,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { LikeDesigner } from '../../designer/entity/like-designer.entity';
+import { Reservation } from '../../reservation/entity/reservation.entity';
 import { Review } from '../../review/entity/review.entity';
 import { LikeShop } from '../../shop/entity/like-shop.entity';
 
@@ -21,6 +23,7 @@ export class User {
   id: number;
 
   @Field()
+  @Index('email')
   @Column({ length: 255 })
   email: string;
 
@@ -48,4 +51,7 @@ export class User {
 
   @OneToMany(() => LikeShop, (entity) => entity.user, { nullable: true })
   likeShops?: LikeShop[];
+
+  @OneToMany(() => Reservation, (entity) => entity.user, { nullable: true })
+  reservations?: Reservation[];
 }

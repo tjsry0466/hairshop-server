@@ -4,8 +4,10 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,7 +16,9 @@ import { Admin } from '../../admin/entity/admin.entity';
 import { DAY_OF_WEEK } from '../../common/enum/day-of-week';
 import { DesignerMenu } from '../../designer/entity/designer-menu.entity';
 import { Designer } from '../../designer/entity/designer.entity';
+import { Reservation } from '../../reservation/entity/reservation.entity';
 import { LikeShop } from './like-shop.entity';
+import { Seat } from './seat.entity';
 
 @ObjectType()
 @Entity()
@@ -24,9 +28,11 @@ export class Shop {
   id: number;
 
   @Field(() => Int)
-  @Column()
+  @Index('ownerId')
+  @Column('int', { unsigned: true })
   ownerId: number;
 
+  @Index('name')
   @Field({ description: '가게 이름' })
   @Column({ length: 255 })
   name: string;
@@ -72,11 +78,11 @@ export class Shop {
   safeNumber?: string;
 
   @Field(() => Int, { description: '리뷰 개수' })
-  @Column({ default: 0 })
+  @Column({ default: 0, unsigned: true })
   reviewCount: number;
 
   @Field({ description: '리뷰 평점' })
-  @Column({ default: 0 })
+  @Column({ default: 0, unsigned: true })
   reviewRating: number;
 
   @CreateDateColumn()
@@ -93,6 +99,9 @@ export class Shop {
   })
   owner: Admin;
 
+  @OneToOne(() => Seat, (entity) => entity.seat)
+  seat?: Seat;
+
   @OneToMany(() => Designer, (entity) => entity.shop, { nullable: true })
   designers?: Designer[];
 
@@ -101,4 +110,7 @@ export class Shop {
 
   @OneToMany(() => LikeShop, (entity) => entity.shop, { nullable: true })
   likeShops?: LikeShop[];
+
+  @OneToMany(() => Reservation, (entity) => entity.shop, { nullable: true })
+  reservations?: Reservation[];
 }

@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,11 +21,12 @@ export class ReviewComment {
   id: number;
 
   @Field(() => Int)
-  @Column()
+  @Index('reviewId')
+  @Column('int', { unsigned: true })
   reviewId: number;
 
   @Field(() => Int)
-  @Column()
+  @Column('int', { unsigned: true })
   designerId: number;
 
   @Field()

@@ -5,6 +5,7 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -12,7 +13,9 @@ import {
 
 import { Gender } from '../../common/enum/gender';
 import { DesignerMenu } from '../../designer/entity/designer-menu.entity';
+import { Reservation } from '../../reservation/entity/reservation.entity';
 import { Review } from '../../review/entity/review.entity';
+import { Shop } from '../../shop/entity/shop.entity';
 import { LengthOption } from './length-option.entity';
 
 @ObjectType()
@@ -24,7 +27,7 @@ export class Menu {
 
   @Field(() => Int)
   @Index('shopId')
-  @Column()
+  @Column('int', { unsigned: true })
   shopId: number;
 
   @Field({ description: '커트 포함 옵션' })
@@ -40,7 +43,7 @@ export class Menu {
   description?: string;
 
   @Field(() => Int, { nullable: true, description: '할인률' })
-  @Column({ nullable: true })
+  @Column('int', { nullable: true, unsigned: true })
   discountRate?: number;
 
   @Field(() => Int, { nullable: true, description: '시술 소요 시간' })
@@ -56,15 +59,15 @@ export class Menu {
   imagesUrls?: string;
 
   @Field(() => Int, { description: '기본 가격' })
-  @Column()
+  @Column('int', { unsigned: true })
   normalPrice: number;
 
   @Field(() => Int, { description: '할인 가격' })
-  @Column()
+  @Column('int', { unsigned: true })
   salesPrice: number;
 
   @Field(() => Int, { description: '좋아요 개수' })
-  @Column({ default: 0 })
+  @Column({ default: 0, unsigned: true })
   likeCount: number;
 
   @CreateDateColumn()
@@ -76,6 +79,11 @@ export class Menu {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  @ManyToOne(() => Shop, (entity) => entity.designerMenus, {
+    createForeignKeyConstraints: false,
+  })
+  shop: Shop;
+
   @OneToMany(() => Review, (entity) => entity.menu)
   reviews?: Review[];
 
@@ -84,4 +92,7 @@ export class Menu {
 
   @OneToMany(() => DesignerMenu, (entity) => entity.menu)
   designerMenus?: DesignerMenu[];
+
+  @OneToMany(() => Reservation, (entity) => entity.menu)
+  reservedMenus?: Reservation[];
 }

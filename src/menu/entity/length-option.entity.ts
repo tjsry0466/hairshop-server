@@ -6,12 +6,14 @@ import {
   Index,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { Menu } from './menu.entity';
 
 @ObjectType()
+@Unique('unique_menu_name', ['menuId', 'name'])
 @Entity()
 export class LengthOption {
   @Field(() => ID)
@@ -20,7 +22,7 @@ export class LengthOption {
 
   @Field(() => Int)
   @Index('menuId')
-  @Column()
+  @Column('int', { unsigned: true })
   menuId: number;
 
   @Field({ description: '타입' })
@@ -32,11 +34,11 @@ export class LengthOption {
   name: string;
 
   @Field(() => Int, { description: '순서' })
-  @Column()
+  @Column('int', { unsigned: true })
   order: number;
 
   @Field(() => Int, { nullable: true, description: '추가 가격' })
-  @Column({ nullable: true })
+  @Column({ nullable: true, unsigned: true })
   extraPrice?: number;
 
   @CreateDateColumn()

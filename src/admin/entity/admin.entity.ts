@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -18,9 +19,10 @@ export class Admin {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field({ description: '아이디' })
-  @Column({ length: 100 })
-  username: string;
+  @Index('email')
+  @Field({ description: '이메일' })
+  @Column({ length: 255 })
+  email: string;
 
   @Field({ description: '비밀번호' })
   @Column()

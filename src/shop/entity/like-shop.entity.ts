@@ -1,10 +1,19 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 import { User } from '../../user/entity/user.entity';
 import { Shop } from './shop.entity';
 
 @ObjectType()
+@Unique('unique_user_like_shop', ['userId', 'shopId'])
 @Entity()
 export class LikeShop {
   @Field(() => ID, { description: '가게 좋아요 id' })
@@ -12,11 +21,12 @@ export class LikeShop {
   id: number;
 
   @Field(() => Int)
-  @Column()
+  @Column('int', { unsigned: true })
   userId: number;
 
+  @Index('shopId')
   @Field(() => Int)
-  @Column()
+  @Column('int', { unsigned: true })
   shopId: number;
 
   @CreateDateColumn()
