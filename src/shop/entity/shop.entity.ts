@@ -7,7 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 import { Admin } from '../../admin/entity/admin.entity';
@@ -40,11 +40,11 @@ export class Shop {
   intro: string;
 
   @Field({ nullable: true, description: '추가정보' })
-  @Column({ nullable: true, array: true })
+  @Column('simple-array', { nullable: true })
   additionalInfos?: string;
 
   @Field({ description: '가게 이미지' })
-  @Column({ array: true })
+  @Column('simple-array')
   imageUrls: string;
 
   @Field(() => DAY_OF_WEEK, { description: '정기휴일' })

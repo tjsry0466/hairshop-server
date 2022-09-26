@@ -7,7 +7,7 @@ import {
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 import { Gender } from '../../common/enum/gender';
@@ -52,7 +52,7 @@ export class Menu {
   gender?: Gender;
 
   @Field({ nullable: true, description: '시술 이미지' })
-  @Column({ nullable: true, array: true })
+  @Column('simple-array', { nullable: true })
   imagesUrls?: string;
 
   @Field(() => Int, { description: '기본 가격' })

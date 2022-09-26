@@ -7,7 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 import { Designer } from '../../designer/entity/designer.entity';
@@ -47,7 +47,7 @@ export class Review {
   visitCount?: number;
 
   @Field({ nullable: true })
-  @Column({ nullable: true, array: true })
+  @Column('simple-array', { nullable: true })
   photoUrls?: string;
 
   @CreateDateColumn()
