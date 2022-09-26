@@ -7,7 +7,7 @@ import {
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { Gender } from '../../common/enum/gender';

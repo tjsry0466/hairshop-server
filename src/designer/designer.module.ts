@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { DesignerService } from './designer.service';
+
 import { DesignerResolver } from './designer.resolver';
+import { DesignerService } from './designer.service';
 
 @Module({
-  providers: [DesignerResolver, DesignerService]
+  providers: [DesignerResolver, DesignerService],
 })
 export class DesignerModule {}

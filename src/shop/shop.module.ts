@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ShopService } from './shop.service';
+
 import { ShopResolver } from './shop.resolver';
+import { ShopService } from './shop.service';
 
 @Module({
-  providers: [ShopResolver, ShopService]
+  providers: [ShopResolver, ShopService],
 })
 export class ShopModule {}

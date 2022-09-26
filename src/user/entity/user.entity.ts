@@ -6,7 +6,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { LikeDesigner } from '../../designer/entity/like-designer.entity';

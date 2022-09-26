@@ -2,7 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 
 import { ErrorMessages } from './error-messages';
