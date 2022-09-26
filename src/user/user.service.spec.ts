@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import * as bcrypt from 'bcrypt';
 
 import { userData } from '../../test/data/user.data.mock';
 import { MockUserRepository } from '../../test/repository/user.repository.mock';
+import { IAddUser } from './interface/add-user.interface';
 import { UserRepository } from './repository';
 import { UserService } from './user.service';
 
@@ -57,6 +59,26 @@ describe('UserService', () => {
       expect(result).toEqual(user);
       expect(userRepository.getOneById).toBeCalledTimes(1);
       expect(userRepository.getOneById).toBeCalledWith(id);
+    });
+  });
+
+  describe('addUser()', () => {
+    it('normal case', async () => {
+      // given
+      const hashedPassword = 'hashedPassword';
+      jest.spyOn(bcrypt, 'hash').mockImplementation(() => hashedPassword);
+      const { id, ...user } = userData()[0];
+      const addUserArgs: IAddUser = user;
+
+      //when
+      const addUserOutput = await service.addUser(addUserArgs);
+
+      //then
+      expect(userRepository.addUser).toBeCalledWith({
+        ...addUserArgs,
+        password: hashedPassword,
+      });
+      expect(addUserOutput).toEqual({ id, ...user, password: hashedPassword });
     });
   });
 });
