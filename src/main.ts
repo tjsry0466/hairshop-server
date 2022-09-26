@@ -9,7 +9,7 @@ import * as express from 'express';
 import helmet from 'helmet';
 import {
   initializeTransactionalContext,
-  patchTypeORMRepositoryWithBaseRepository,
+  patchTypeORMRepositoryWithBaseRepository
 } from 'typeorm-transactional-cls-hooked';
 
 import { AppModule } from './app.module';

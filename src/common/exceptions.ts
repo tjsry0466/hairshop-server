@@ -1,7 +1,20 @@
-import { InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common';
 
-import { ErrorMessages as Error } from './error-messages';
+import { ErrorMessages } from './error-messages';
 
 export class Exceptions {
-  static readonly fallback = new InternalServerErrorException(Error.default);
+  static readonly emailAlreadyExistsError = new BadRequestException(
+    ErrorMessages.emailAlreadyExistsErrorMessage,
+  );
+
+  static readonly fallback = new InternalServerErrorException(ErrorMessages.default);
+  static readonly userNotFoundError = new NotFoundException(ErrorMessages.userNotFoundMessage);
+  static readonly invalidPasswordError = new ForbiddenException(
+    ErrorMessages.invalidPasswordErrorMessage,
+  );
 }
