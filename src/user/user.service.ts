@@ -9,6 +9,10 @@ import { UserRepository } from './repository';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  async getUserById(id: number) {
+    return this.userRepository.getOneById(id);
+  }
+
   async getUserByEmail(email: string) {
     return this.userRepository.getOneByEmail(email);
   }
