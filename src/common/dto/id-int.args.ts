@@ -1,9 +1,10 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
-import { IsPositive } from 'class-validator';
+import { IsInt, Min } from 'class-validator';
 
 @ArgsType()
-export class IdArgs {
-  @IsPositive()
+export class IdIntArgs {
+  @IsInt()
+  @Min(1)
   @Field(() => Int)
   id: number;
 }

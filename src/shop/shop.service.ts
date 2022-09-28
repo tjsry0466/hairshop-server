@@ -7,6 +7,10 @@ import { ShopRepository } from './repository/shop.repository';
 export class ShopService {
   constructor(private readonly shopRepository: ShopRepository) {}
 
+  async getShopById(id: number) {
+    return this.shopRepository.getOneById(id);
+  }
+
   async addShop(args: IAddShop) {
     await this.shopRepository.addShop(args);
     return true;
