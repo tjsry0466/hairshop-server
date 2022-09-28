@@ -1,5 +1,4 @@
-import { Query } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { RequestInfo, Roles } from '../common/decorator';
 import { IdIntArgs } from '../common/dto/id-int.args';
