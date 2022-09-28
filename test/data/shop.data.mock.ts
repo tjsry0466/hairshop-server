@@ -5,9 +5,7 @@ import { Shop } from '../../src/shop/entity/shop.entity';
 export const shopDataObject = [
   {
     id: 1,
-    email: 'pirit@kyojs.com',
-    password: '12345678',
-    name: 'pirit',
+    name: '피릿 헤어샵',
   },
 ];
 
