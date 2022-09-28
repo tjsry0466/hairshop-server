@@ -39,7 +39,7 @@ export class AddShopArgs {
 
   @ArrayUnique()
   @IsEnum(DAY_OF_WEEK, { each: true })
-  @Field(() => DAY_OF_WEEK)
+  @Field(() => [DAY_OF_WEEK])
   offDay: DAY_OF_WEEK[];
 
   @IsNotEmpty()
