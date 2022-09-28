@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { shopData } from '../../test/data/shop.data.mock';
 import { userData } from '../../test/data/user.data.mock';
 import { MockShopRepository } from '../../test/repository/shop.repository.mock';
 import { DAY_OF_WEEK } from '../common/enum/day-of-week';
@@ -26,6 +27,21 @@ describe('ShopService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('getShopById()', () => {
+    it('normal case', async () => {
+      // given
+      const id = 1;
+
+      // when
+      const result = await service.getShopById(id);
+
+      // then
+      expect(result).toEqual(shopData()[0]);
+      expect(shopRepository.getOneById).toBeCalledTimes(1);
+      expect(shopRepository.getOneById).toBeCalledWith(id);
+    });
   });
 
   describe('addShop()', () => {
