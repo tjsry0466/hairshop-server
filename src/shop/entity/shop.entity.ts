@@ -45,13 +45,13 @@ export class Shop {
   @Column({ length: 255 })
   intro: string;
 
-  @Field({ nullable: true, description: '추가정보' })
+  @Field(() => [String], { nullable: true, description: '추가정보' })
   @Column('simple-array', { nullable: true })
-  additionalInfos?: string;
+  additionalInfos?: string[];
 
-  @Field({ description: '가게 이미지' })
+  @Field(() => [String], { description: '가게 이미지' })
   @Column('simple-array')
-  imageUrls: string;
+  imageUrls: string[];
 
   @Field(() => DAY_OF_WEEK, { description: '정기휴일' })
   @Column({ type: 'enum', enum: DAY_OF_WEEK })
