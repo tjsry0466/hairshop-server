@@ -14,6 +14,7 @@ export class Exceptions {
 
   static readonly fallback = new InternalServerErrorException(ErrorMessages.default);
   static readonly userNotFoundError = new NotFoundException(ErrorMessages.userNotFoundMessage);
+  static readonly shopNotFoundError = new NotFoundException(ErrorMessages.shopNotFoundMessage);
   static readonly invalidPasswordError = new ForbiddenException(
     ErrorMessages.invalidPasswordErrorMessage,
   );
