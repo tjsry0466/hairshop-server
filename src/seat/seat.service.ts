@@ -28,6 +28,11 @@ export class SeatService {
   }
 
   private validateSeat(seat: number[][]) {
+    const validSeats = [SeatType.NON_SEAT, SeatType.SEAT];
+    if (seat.flat().find((item) => !validSeats.includes(item))) {
+      throw Exceptions.invalidAddSeatError;
+    }
+
     const firstColumn = seat[0].length;
     const equalColumns = seat.every((item) => item.length === firstColumn);
     if (!equalColumns) {

@@ -80,5 +80,22 @@ describe('SeatService', () => {
       expect(shopService.getShopById).toBeCalledWith(shopId);
       expect(seatRepository.addSeat).not.toBeCalled();
     });
+
+    it('입력된 정보가 올바르지 않은 경우', async () => {
+      // given
+      const shopId = 1;
+      const seat = [
+        [0, 1],
+        [1, 2],
+      ];
+
+      // when
+      await expect(service.addSeat({ shopId, seat })).rejects.toThrow(
+        Exceptions.invalidAddSeatError,
+      );
+      expect(shopService.getShopById).toBeCalledTimes(1);
+      expect(shopService.getShopById).toBeCalledWith(shopId);
+      expect(seatRepository.addSeat).not.toBeCalled();
+    });
   });
 });
