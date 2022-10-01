@@ -14,16 +14,20 @@ export class SeatService {
   ) {}
 
   async addSeat(args: IAddSeat) {
-    const { shopId, seat } = args;
+    const { userId, shopId, seat } = args;
     const shop = await this.shopService.getShopById(shopId);
     if (!shop) {
       throw Exceptions.shopNotFoundError;
     }
 
+    if (shop.ownerId !== userId) {
+      throw Exceptions.notPermittedError;
+    }
+
     this.validateSeat(seat);
 
     const seatInfos = this.getSeatInfo(seat);
-    await this.seatRepository.addSeat({ ...args, ...seatInfos });
+    await this.seatRepository.addSeat({ shopId, seat, ...seatInfos });
     return true;
   }
 

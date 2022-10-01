@@ -1,7 +1,8 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
-import { Roles } from '../common/decorator';
+import { RequestInfo, Roles } from '../common/decorator';
 import { Role } from '../common/enum';
+import { IRequest } from '../common/interface';
 import { AddSeatArgs } from './dto/add-seat.args';
 import { SeatService } from './seat.service';
 
@@ -11,7 +12,7 @@ export class SeatResolver {
 
   @Roles(Role.USER)
   @Mutation(() => Boolean)
-  async addSeat(@Args() args: AddSeatArgs) {
-    return this.seatService.addSeat(args);
+  async addSeat(@Args() args: AddSeatArgs, @RequestInfo() req: Required<IRequest>) {
+    return this.seatService.addSeat({ ...args, userId: req.user.id });
   }
 }

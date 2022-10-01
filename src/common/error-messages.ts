@@ -5,4 +5,5 @@ export class ErrorMessages {
   static readonly shopNotFoundMessage = '샵 정보가 존재하지 않습니다.';
   static readonly invalidPasswordErrorMessage = '비밀번호가 올바르지 않습니다.\n다시 입력해주세요.';
   static readonly invalidAddSeatErrorMessage = '추가하려는 자리의 정보가 유효하지 않습니다.\n다시 입력해주세요.';
+  static readonly notPermittedErrorMessage = '수행하려는 동작의 권한이 없습니다.';
 }

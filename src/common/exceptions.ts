@@ -22,4 +22,8 @@ export class Exceptions {
   static readonly invalidAddSeatError = new BadRequestException(
     ErrorMessages.invalidAddSeatErrorMessage,
   );
+
+  static readonly notPermittedError = new ForbiddenException(
+    ErrorMessages.notPermittedErrorMessage,
+  );
 }

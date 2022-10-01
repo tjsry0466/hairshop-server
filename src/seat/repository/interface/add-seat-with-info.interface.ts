@@ -1,6 +1,6 @@
-import { IAddSeat } from '../../interface/add-seat.interface';
-
-export interface IAddSeatWithInfo extends IAddSeat {
+export interface IAddSeatWithInfo {
+  shopId: number;
+  seat: number[][];
   total: number;
   nonSeatCount: number;
   seatCount: number;

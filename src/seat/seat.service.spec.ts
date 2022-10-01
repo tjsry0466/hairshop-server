@@ -39,6 +39,7 @@ describe('SeatService', () => {
   describe('addSeat', () => {
     it('normal case', async () => {
       // given
+      const userId = 1;
       const shopId = 1;
       const seat = [
         [0, 1],
@@ -46,7 +47,7 @@ describe('SeatService', () => {
       ];
 
       // when
-      const result = await service.addSeat({ shopId, seat });
+      const result = await service.addSeat({ userId, shopId, seat });
 
       // then
       const total = 4;
@@ -68,6 +69,7 @@ describe('SeatService', () => {
     it('샵이 존재하지 않는 경우', async () => {
       // given
       jest.spyOn(shopService, 'getShopById').mockResolvedValue(undefined);
+      const userId = 1;
       const shopId = 1;
       const seat = [
         [0, 1],
@@ -75,7 +77,9 @@ describe('SeatService', () => {
       ];
 
       // when
-      await expect(service.addSeat({ shopId, seat })).rejects.toThrow(Exceptions.shopNotFoundError);
+      await expect(service.addSeat({ userId, shopId, seat })).rejects.toThrow(
+        Exceptions.shopNotFoundError,
+      );
       expect(shopService.getShopById).toBeCalledTimes(1);
       expect(shopService.getShopById).toBeCalledWith(shopId);
       expect(seatRepository.addSeat).not.toBeCalled();
@@ -83,6 +87,7 @@ describe('SeatService', () => {
 
     it('입력된 정보가 올바르지 않은 경우', async () => {
       // given
+      const userId = 1;
       const shopId = 1;
       const seat = [
         [0, 1],
@@ -90,7 +95,7 @@ describe('SeatService', () => {
       ];
 
       // when
-      await expect(service.addSeat({ shopId, seat })).rejects.toThrow(
+      await expect(service.addSeat({ userId, shopId, seat })).rejects.toThrow(
         Exceptions.invalidAddSeatError,
       );
       expect(shopService.getShopById).toBeCalledTimes(1);
