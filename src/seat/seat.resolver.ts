@@ -12,7 +12,6 @@ export class SeatResolver {
   @Roles(Role.USER)
   @Mutation(() => Boolean)
   async addSeat(@Args() args: AddSeatArgs) {
-    // return true;
     return this.seatService.addSeat(args);
   }
 }

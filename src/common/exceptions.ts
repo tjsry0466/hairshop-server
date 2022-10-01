@@ -18,4 +18,8 @@ export class Exceptions {
   static readonly invalidPasswordError = new ForbiddenException(
     ErrorMessages.invalidPasswordErrorMessage,
   );
+
+  static readonly invalidAddSeatError = new BadRequestException(
+    ErrorMessages.invalidAddSeatErrorMessage,
+  );
 }
