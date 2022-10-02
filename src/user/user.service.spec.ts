@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { userData } from '../../test/data/user.data.mock';
 import { MockUserRepository } from '../../test/repository/user.repository.mock';
 import { IAddUser } from './interface/add-user.interface';
+import { IResetPassword } from './interface/reset-password.interface';
 import { UserRepository } from './repository';
 import { UserService } from './user.service';
 
@@ -95,6 +96,24 @@ describe('UserService', () => {
         password: hashedPassword,
       });
       expect(addUserOutput).toEqual({ id, ...user, password: hashedPassword });
+    });
+  });
+
+  describe('resetPassword()', () => {
+    it('should succeed resetting the password', async () => {
+      //given
+      const { id } = userData()[0];
+      const args: IResetPassword = {
+        userId: id,
+        password: '12345678',
+        newPassword: '87654321',
+      };
+
+      //when
+      const bool = await service.resetPassword(args);
+
+      //then
+      expect(bool).toBeTruthy();
     });
   });
 });
