@@ -4,12 +4,16 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { RequestInfo, Roles } from '../common/decorator';
 import { Role } from '../common/enum';
 import { IRequest } from '../common/interface';
+import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import { LoginArgs, SignupArgs, SignupOutput, TokenOutput } from './dto';
+import { LoginArgs, SignupArgs, SignupOutput, TokenOutput, ResetPasswordArgs } from './dto';
 
 @Resolver()
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Mutation(() => TokenOutput)
   async login(@Args() loginArg: LoginArgs) {
@@ -29,5 +33,10 @@ export class AuthResolver {
   @Mutation(() => SignupOutput)
   async signup(@Args() args: SignupArgs) {
     return this.authService.signup(args);
+  }
+
+  @Mutation(() => Boolean)
+  async resetPassword(@Args() args: ResetPasswordArgs) {
+    return this.userService.resetPassword(args);
   }
 }

@@ -2,6 +2,7 @@ import { EntityRepository, Repository } from 'typeorm';
 
 import { User } from '../entity/user.entity';
 import { IAddUser } from '../interface/add-user.interface';
+import { IResetPassword } from '../interface/reset-password.interface';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -25,5 +26,9 @@ export class UserRepository extends Repository<User> {
 
   async addUser(args: IAddUser) {
     return this.save(this.create(args));
+  }
+
+  async resetPassword(args: IResetPassword) {
+    return await this.update({ id: args.userId }, { password: args.newPassword });
   }
 }
