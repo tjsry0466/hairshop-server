@@ -7,6 +7,6 @@ export const MockUserRepository = () => ({
   addUser: jest.fn().mockResolvedValue({ ...userData()[0], password: 'hashedPassword' }),
   resetPassword: jest.fn().mockResolvedValue({
     ...userData()[0],
-    password: '$2a$10$GQjS9Ze/cn6Zxa2fSHlwre4BgYiIGe32HrA9x8lzX0lGcWUuSw3Ii',
+    password: '$2a$10$ymqqlTu914LsYh0ElWca7.n07Bo.s1r7RF5RRDufR9SWE.dc3y9gi',
   }),
 });

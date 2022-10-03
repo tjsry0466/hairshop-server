@@ -35,6 +35,7 @@ export class AuthResolver {
     return this.authService.signup(args);
   }
 
+  @Roles(Role.USER)
   @Mutation(() => Boolean)
   async resetPassword(@Args() args: ResetPasswordArgs) {
     return this.userService.resetPassword(args);

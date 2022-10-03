@@ -3,9 +3,9 @@ import { IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
 
 @ArgsType()
 export class ResetPasswordArgs {
-  @Field()
   @IsInt()
   @Min(1)
+  @Field()
   userId: number;
 
   @IsNotEmpty()

@@ -108,12 +108,15 @@ describe('UserService', () => {
         password: '12345678',
         newPassword: '87654321',
       };
+      jest.spyOn(bcrypt, 'hash').mockImplementation(() => args.newPassword);
 
       //when
       const bool = await service.resetPassword(args);
 
       //then
-      expect(bool).toBeTruthy();
+      expect(bool).toBe(true);
+      expect(userRepository.resetPassword).toBeCalledWith(id, args.newPassword);
+      expect(userRepository.resetPassword).toBeCalledTimes(1);
     });
   });
 });
