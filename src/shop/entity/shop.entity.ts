@@ -17,8 +17,8 @@ import { DAY_OF_WEEK } from '../../common/enum/day-of-week';
 import { DesignerMenu } from '../../designer/entity/designer-menu.entity';
 import { Designer } from '../../designer/entity/designer.entity';
 import { Reservation } from '../../reservation/entity/reservation.entity';
+import { Seat } from '../../seat/entity/seat.entity';
 import { LikeShop } from './like-shop.entity';
-import { Seat } from './seat.entity';
 
 @ObjectType()
 @Entity()

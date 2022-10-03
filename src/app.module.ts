@@ -13,6 +13,7 @@ import { TypeORMExceptionFilter } from './common/filter/typeorm-exception.filter
 import { DesignerModule } from './designer/designer.module';
 import { ShopModule } from './shop/shop.module';
 import { UserModule } from './user/user.module';
+import { SeatModule } from './seat/seat.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     ShopModule,
     DesignerModule,
+    SeatModule,
   ],
   controllers: [AppController],
   providers: [
