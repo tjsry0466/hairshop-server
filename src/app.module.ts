@@ -6,7 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { isProd } from './common/constant';
 import { TypeORMExceptionFilter } from './common/filter/typeorm-exception.filter';
@@ -41,7 +40,6 @@ import { UserModule } from './user/user.module';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_FILTER,
       useClass: TypeORMExceptionFilter,
