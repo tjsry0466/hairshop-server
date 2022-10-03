@@ -41,6 +41,7 @@ describe('MenuService', () => {
     it('normal case', async () => {
       // given
       const args = {
+        userId: 1,
         shopId: 1,
         name: '시술 1',
         includeCutOption: true,
@@ -80,6 +81,7 @@ describe('MenuService', () => {
       // given
       jest.spyOn(shopService, 'getShopById').mockResolvedValue(undefined);
       const args = {
+        userId: 1,
         shopId: 1,
         name: '시술 1',
         includeCutOption: true,
@@ -94,6 +96,29 @@ describe('MenuService', () => {
 
       // when
       await expect(service.addMenu(args)).rejects.toThrow(Exceptions.shopNotFoundError);
+      expect(shopService.getShopById).toBeCalledTimes(1);
+      expect(shopService.getShopById).toBeCalledWith(args.shopId);
+      expect(menuRepository.addMenu).not.toBeCalled();
+    });
+
+    it('샵이 소유주가 아닌 경우', async () => {
+      // given
+      const args = {
+        userId: 9999,
+        shopId: 1,
+        name: '시술 1',
+        includeCutOption: true,
+        includeShampooOption: true,
+        price: 10000,
+        requireMinute: 20,
+        description: '아주 좋아요 !',
+        discountRate: 20,
+        gender: Gender.MALE,
+        imageUrls: ['https://naver.com/image'],
+      };
+
+      // when
+      await expect(service.addMenu(args)).rejects.toThrow(Exceptions.notPermittedError);
       expect(shopService.getShopById).toBeCalledTimes(1);
       expect(shopService.getShopById).toBeCalledWith(args.shopId);
       expect(menuRepository.addMenu).not.toBeCalled();

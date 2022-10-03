@@ -1,6 +1,7 @@
 import { Gender } from '../../../common/enum/gender';
 
 export interface IAddMenu {
+  userId: number;
   shopId: number;
   name: string;
   includeCutOption: boolean;

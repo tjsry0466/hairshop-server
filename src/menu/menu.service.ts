@@ -18,14 +18,18 @@ export class MenuService {
       throw Exceptions.shopNotFoundError;
     }
 
+    if (args.userId !== shop.ownerId) {
+      throw Exceptions.notPermittedError;
+    }
+
     const priceInfo = { normalPrice: args.price, salesPrice: args.price };
     if (args.discountRate) {
       const salesPrice = args.price - args.price * (args.discountRate / 100);
       priceInfo.salesPrice = salesPrice;
     }
 
-    const { price, ...excludePriceArgs } = args;
-    await this.menuRepository.addMenu({ ...excludePriceArgs, ...priceInfo });
+    const { price, userId, ...addMenuArgs } = args;
+    await this.menuRepository.addMenu({ ...addMenuArgs, ...priceInfo });
     return true;
   }
 }
