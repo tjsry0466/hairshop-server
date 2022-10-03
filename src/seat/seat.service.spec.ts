@@ -101,7 +101,25 @@ describe('SeatService', () => {
       expect(seatRepository.addSeat).not.toBeCalled();
     });
 
-    it('입력된 정보가 올바르지 않은 경우', async () => {
+    it('샵의 소유주가 아닌 경우', async () => {
+      // given
+      const userId = 9999;
+      const shopId = 1;
+      const seat = [
+        [0, 1],
+        [1, 1],
+      ];
+
+      // when
+      await expect(service.addSeat({ userId, shopId, seat })).rejects.toThrow(
+        Exceptions.notPermittedError,
+      );
+      expect(shopService.getShopById).toBeCalledTimes(1);
+      expect(shopService.getShopById).toBeCalledWith(shopId);
+      expect(seatRepository.addSeat).not.toBeCalled();
+    });
+
+    it('좌석 정보가 올바르게 입력되지 않은 경우', async () => {
       // given
       const userId = 1;
       const shopId = 1;
@@ -109,6 +127,21 @@ describe('SeatService', () => {
         [0, 1],
         [1, 2],
       ];
+
+      // when
+      await expect(service.addSeat({ userId, shopId, seat })).rejects.toThrow(
+        Exceptions.invalidAddSeatError,
+      );
+      expect(shopService.getShopById).toBeCalledTimes(1);
+      expect(shopService.getShopById).toBeCalledWith(shopId);
+      expect(seatRepository.addSeat).not.toBeCalled();
+    });
+
+    it('좌석의 길이가 다르게 입력된 경우', async () => {
+      // given
+      const userId = 1;
+      const shopId = 1;
+      const seat = [[0, 1], [1]];
 
       // when
       await expect(service.addSeat({ userId, shopId, seat })).rejects.toThrow(
