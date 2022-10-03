@@ -1,5 +1,7 @@
 import { ArgsType, Field } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+
+import { Role } from '../../common/enum';
 
 @ArgsType()
 export class SignupArgs {
@@ -16,4 +18,8 @@ export class SignupArgs {
   @IsString()
   @Field()
   name: string;
+
+  @IsEnum(Role)
+  @Field(() => Role)
+  role: Role;
 }

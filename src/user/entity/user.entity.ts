@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { Role } from '../../common/enum';
 import { LikeDesigner } from '../../designer/entity/like-designer.entity';
 import { Reservation } from '../../reservation/entity/reservation.entity';
 import { Review } from '../../review/entity/review.entity';
@@ -33,6 +34,10 @@ export class User {
   @Field()
   @Column({ length: 20 })
   name: string;
+
+  @Field(() => Role)
+  @Column({ type: 'enum', default: Role.USER, enum: Role })
+  role: Role;
 
   @CreateDateColumn()
   createdAt: Date;
