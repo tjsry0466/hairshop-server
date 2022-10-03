@@ -13,9 +13,11 @@ export class UserRepository extends Repository<User> {
     return this.findOne({ email });
   }
 
-  async getUserForLogin(email: string): Promise<Pick<User, 'id' | 'password'> | undefined> {
+  async getUserForLogin(
+    email: string,
+  ): Promise<Pick<User, 'id' | 'password' | 'role'> | undefined> {
     return this.createQueryBuilder('user')
-      .select('user.id')
+      .select(['user.id', 'user.role'])
       .addSelect('user.password')
       .where('user.email = :email', { email })
       .getOne();

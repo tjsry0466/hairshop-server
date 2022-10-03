@@ -34,7 +34,7 @@ export class AuthService {
       throw Exceptions.invalidPasswordError;
     }
 
-    return this.signJsonWebToken(user.id, Role.USER);
+    return this.signJsonWebToken(user.id, user.role);
   }
 
   async loginByRefreshToken(user: request.IUser): Promise<TokenOutput> {
