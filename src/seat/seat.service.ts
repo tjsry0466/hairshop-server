@@ -13,6 +13,10 @@ export class SeatService {
     private readonly shopService: ShopService,
   ) {}
 
+  async getSeatByShopId(shopId: number) {
+    return this.seatRepository.getOneByShopId(shopId);
+  }
+
   async addSeat(args: IAddSeat) {
     const { userId, shopId, seat } = args;
     const shop = await this.shopService.getShopById(shopId);
