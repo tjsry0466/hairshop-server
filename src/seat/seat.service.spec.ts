@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { seatData } from '../../test/data/seat.data.mock';
 import { MockSeatRepository } from '../../test/repository/seat.repository.mock';
 import { MockShopService } from '../../test/service/shop.service.mock';
 import { Exceptions } from '../common/exceptions';
@@ -34,6 +35,21 @@ describe('SeatService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('getSeatByShopId', () => {
+    it('normal case', async () => {
+      // given
+      const shopId = 1;
+
+      // when
+      const result = await service.getSeatByShopId(shopId);
+
+      // then
+      expect(result).toEqual(seatData()[0]);
+      expect(seatRepository.getOneByShopId).toBeCalledTimes(1);
+      expect(seatRepository.getOneByShopId).toBeCalledWith(shopId);
+    });
   });
 
   describe('addSeat', () => {
