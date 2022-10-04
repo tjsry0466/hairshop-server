@@ -46,10 +46,14 @@ export class Reservation {
 
   @Field()
   @Column('date')
+  reservationDate: Date;
+
+  @Field()
+  @Column('datetime')
   startTime: Date;
 
   @Field()
-  @Column('date')
+  @Column('datetime')
   endTime: Date;
 
   @Field(() => Int)

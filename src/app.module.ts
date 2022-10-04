@@ -11,6 +11,7 @@ import { isProd } from './common/constant';
 import { TypeORMExceptionFilter } from './common/filter/typeorm-exception.filter';
 import { DesignerModule } from './designer/designer.module';
 import { MenuModule } from './menu/menu.module';
+import { ReservationModule } from './reservation/reservation.module';
 import { SeatModule } from './seat/seat.module';
 import { ShopModule } from './shop/shop.module';
 import { UserModule } from './user/user.module';
@@ -37,6 +38,7 @@ import { UserModule } from './user/user.module';
     DesignerModule,
     SeatModule,
     MenuModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [
