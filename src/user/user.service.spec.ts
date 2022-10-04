@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 import { userData } from '../../test/data/user.data.mock';
 import { MockUserRepository } from '../../test/repository/user.repository.mock';
+import { Exceptions } from '../common/exceptions';
 import { IAddUser } from './interface/add-user.interface';
 import { IResetPassword } from './interface/reset-password.interface';
 import { UserRepository } from './repository';
@@ -108,15 +109,45 @@ describe('UserService', () => {
         password: '12345678',
         newPassword: '87654321',
       };
-      jest.spyOn(bcrypt, 'hash').mockImplementation(() => args.newPassword);
+      const hashedPassword = '87654321';
+
+      jest.spyOn(bcrypt, 'hash').mockImplementation(() => hashedPassword);
 
       //when
-      const bool = await service.resetPassword(args);
+      const result = await service.resetPassword(args);
 
       //then
-      expect(bool).toBe(true);
-      expect(userRepository.resetPassword).toBeCalledWith(id, args.newPassword);
+      expect(result).toBe(true);
+      expect(userRepository.resetPassword).toBeCalledWith(id, hashedPassword);
       expect(userRepository.resetPassword).toBeCalledTimes(1);
+    });
+
+    it('should fail resetting password if the given user does not exist', async function () {
+      //given
+      jest.spyOn(userRepository, 'getOneById').mockResolvedValue(undefined);
+      const args: IResetPassword = {
+        userId: 100,
+        password: '12345678',
+        newPassword: '87654321',
+      };
+
+      //when - then
+      await expect(service.resetPassword(args)).rejects.toThrow(Exceptions.userNotFoundError);
+      expect(userRepository.resetPassword).toBeCalledTimes(0);
+    });
+
+    it('should fail when the given password is wrong', async function () {
+      //given
+      const { id } = userData()[1];
+      const args: IResetPassword = {
+        userId: id,
+        password: 'wrong password',
+        newPassword: '87654321',
+      };
+
+      //when - then
+      await expect(service.resetPassword(args)).rejects.toThrow(Exceptions.invalidPasswordError);
+      expect(userRepository.resetPassword).toBeCalledTimes(0);
     });
   });
 });
