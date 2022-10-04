@@ -50,13 +50,13 @@ describe('UserService', () => {
   describe('getUserById()', () => {
     it('normal case', async () => {
       // given
-      const id = 1;
+      const id = 2;
 
       // when
       const result = await service.getUserById(id);
 
       // then
-      const user = userData()[0];
+      const user = userData()[1];
       expect(result).toEqual(user);
       expect(userRepository.getOneById).toBeCalledTimes(1);
       expect(userRepository.getOneById).toBeCalledWith(id);
@@ -102,7 +102,7 @@ describe('UserService', () => {
   describe('resetPassword()', () => {
     it('should succeed resetting the password', async () => {
       //given
-      const { id } = userData()[0];
+      const { id } = userData()[1];
       const args: IResetPassword = {
         userId: id,
         password: '12345678',

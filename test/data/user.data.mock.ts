@@ -7,6 +7,12 @@ export const userDataObject = [
   {
     id: 1,
     email: 'pirit@kyojs.com',
+    password: '12345678',
+    name: 'pirit',
+  },
+  {
+    id: 2,
+    email: 'pirit@kyojs.com',
     password: '$2a$10$xxGdIYsahxU80tT.XyVTCuD/NRrCTQmIybkzS6FMVfuj.TDTswRPW',
     name: 'pirit',
     role: Role.USER,
