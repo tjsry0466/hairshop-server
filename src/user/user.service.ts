@@ -42,10 +42,7 @@ export class UserService {
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, saltCost);
-    const result = await this.userRepository.resetPassword(userId, hashedPassword);
-    if (!(await bcrypt.compare(newPassword, result.password))) {
-      throw Exceptions.fallback;
-    }
+    await this.userRepository.resetPassword(userId, hashedPassword);
 
     return true;
   }
