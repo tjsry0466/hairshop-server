@@ -133,7 +133,8 @@ describe('UserService', () => {
 
       //when - then
       await expect(service.resetPassword(args)).rejects.toThrow(Exceptions.userNotFoundError);
-      expect(userRepository.resetPassword).toBeCalledTimes(0);
+      expect(userRepository.resetPassword).not.toBeCalled();
+      expect(userRepository.getOneById).toBeCalledTimes(1);
     });
 
     it('should fail when the given password is wrong', async function () {
@@ -147,7 +148,8 @@ describe('UserService', () => {
 
       //when - then
       await expect(service.resetPassword(args)).rejects.toThrow(Exceptions.invalidPasswordError);
-      expect(userRepository.resetPassword).toBeCalledTimes(0);
+      expect(userRepository.getOneById).toBeCalledTimes(1);
+      expect(userRepository.resetPassword).not.toBeCalled();
     });
   });
 });
