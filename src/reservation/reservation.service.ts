@@ -21,7 +21,7 @@ export class ReservationService {
   }
 
   async addReservation(args: IAddReservation) {
-    const { shopId, menuId, startTime, row, column, requireMinute } = args;
+    const { userId, shopId, menuId, startTime, row, column, requireMinute } = args;
 
     const shop = await this.shopService.getShopById(shopId);
     if (!shop) {
@@ -50,8 +50,14 @@ export class ReservationService {
     }
 
     await this.reservationRepository.addReservation({
-      ...args,
+      userId,
+      shopId,
+      menuId,
+      row,
+      column,
+      startTime,
       endTime,
+      requireMinute,
       reservationDate,
     });
     return true;
