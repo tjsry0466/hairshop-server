@@ -1,5 +1,6 @@
 import { plainToClass } from 'class-transformer';
 
+import { Role } from '../../src/common/enum';
 import { User } from '../../src/user/entity/user.entity';
 
 export const userDataObject = [
@@ -8,6 +9,7 @@ export const userDataObject = [
     email: 'pirit@kyojs.com',
     password: '12345678',
     name: 'pirit',
+    role: Role.USER,
   },
 ];
 

@@ -10,13 +10,13 @@ import { AuthModule } from './auth/auth.module';
 import { isProd } from './common/constant';
 import { TypeORMExceptionFilter } from './common/filter/typeorm-exception.filter';
 import { DesignerModule } from './designer/designer.module';
+import { MenuModule } from './menu/menu.module';
 import { SeatModule } from './seat/seat.module';
 import { ShopModule } from './shop/shop.module';
 import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    AuthModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       debug: !isProd,
@@ -31,10 +31,12 @@ import { UserModule } from './user/user.module';
           migrations: [__dirname + '/migration/*.{ts,js}'],
         }),
     }),
+    AuthModule,
     UserModule,
     ShopModule,
     DesignerModule,
     SeatModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [
