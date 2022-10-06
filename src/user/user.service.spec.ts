@@ -109,7 +109,7 @@ describe('UserService', () => {
         password: '12345678',
         newPassword: '87654321',
       };
-      const hashedPassword = '87654321';
+      const hashedPassword = '$2a$10$AoYROAsFy0M4R1pTbyjY4upho4rSPQ4xGmMjfqeE9ZAh6NUzCUpU2';
 
       jest.spyOn(bcrypt, 'hash').mockImplementation(() => hashedPassword);
 
