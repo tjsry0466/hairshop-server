@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -19,6 +20,7 @@ import { Shop } from '../../shop/entity/shop.entity';
 import { LengthOption } from './length-option.entity';
 
 @ObjectType()
+@Unique('unique_shopId_name', ['shopId', 'name'])
 @Entity()
 export class Menu {
   @Field(() => ID)
@@ -29,6 +31,10 @@ export class Menu {
   @Index('shopId')
   @Column('int', { unsigned: true })
   shopId: number;
+
+  @Field({ description: '시술명' })
+  @Column()
+  name: string;
 
   @Field({ description: '커트 포함 옵션' })
   @Column({ default: false })
