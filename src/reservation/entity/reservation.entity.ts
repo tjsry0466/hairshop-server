@@ -58,7 +58,7 @@ export class Reservation {
 
   @Field(() => Int)
   @Column('int', { unsigned: true })
-  requireMinute: number;
+  estimatedMinutes: number;
 
   @Field()
   @Column('boolean')

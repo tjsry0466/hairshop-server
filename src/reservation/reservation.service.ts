@@ -21,7 +21,7 @@ export class ReservationService {
   }
 
   async addReservation(args: IAddReservation) {
-    const { userId, shopId, menuId, startTime, row, column, requireMinute } = args;
+    const { userId, shopId, menuId, startTime, row, column, estimatedMinutes } = args;
 
     const shop = await this.shopService.getShopById(shopId);
     if (!shop) {
@@ -34,7 +34,7 @@ export class ReservationService {
     }
 
     const reservationDate = dayjs(args.startTime).format('YYYY-MM-DD');
-    const endTime = dayjs(args.startTime).add(requireMinute, 'minute').toDate();
+    const endTime = dayjs(args.startTime).add(estimatedMinutes, 'minute').toDate();
 
     const reservations = await this.getReservationByInfo({
       shopId,
@@ -57,7 +57,7 @@ export class ReservationService {
       column,
       startTime,
       endTime,
-      requireMinute,
+      estimatedMinutes,
       reservationDate,
     });
     return true;

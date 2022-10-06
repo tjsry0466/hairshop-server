@@ -7,7 +7,7 @@ export interface IAddMenuWithInfo {
   includeShampooOption: boolean;
   normalPrice: number;
   salesPrice: number;
-  requireMinute?: number;
+  estimatedMinutes?: number;
   description?: string;
   discountRate?: number;
   gender?: Gender;

@@ -5,5 +5,5 @@ export interface IAddReservation {
   row: number;
   column: number;
   startTime: Date;
-  requireMinute: number;
+  estimatedMinutes: number;
 }

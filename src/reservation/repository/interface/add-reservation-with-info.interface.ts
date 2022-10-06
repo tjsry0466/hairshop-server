@@ -7,5 +7,5 @@ export interface IAddReservationWithInfo {
   reservationDate: string;
   startTime: Date;
   endTime: Date;
-  requireMinute: number;
+  estimatedMinutes: number;
 }

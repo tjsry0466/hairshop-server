@@ -39,7 +39,7 @@ export class AddMenuArgs {
   @IsOptional()
   @IsInt()
   @Field(() => Int, { nullable: true })
-  requireMinute?: number;
+  estimatedMinutes?: number;
 
   @IsOptional()
   @IsEnum(Gender)

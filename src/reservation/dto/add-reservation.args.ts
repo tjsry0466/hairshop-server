@@ -30,5 +30,5 @@ export class AddReservationArgs {
   @IsInt()
   @Min(1)
   @Field(() => Int)
-  requireMinute: number;
+  estimatedMinutes: number;
 }

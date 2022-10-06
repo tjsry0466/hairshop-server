@@ -78,7 +78,7 @@ describe('ReservationService', () => {
       const row = 0;
       const column = 0;
       const startTime = new Date('2022-01-01 12:00:00');
-      const requireMinute = 20;
+      const estimatedMinutes = 20;
 
       // when
       const result = await service.addReservation({
@@ -88,7 +88,7 @@ describe('ReservationService', () => {
         row,
         column,
         startTime,
-        requireMinute,
+        estimatedMinutes,
       });
 
       // then
@@ -118,7 +118,7 @@ describe('ReservationService', () => {
         column,
         startTime,
         endTime,
-        requireMinute,
+        estimatedMinutes,
         reservationDate,
       });
     });
@@ -132,7 +132,7 @@ describe('ReservationService', () => {
       const row = 0;
       const column = 0;
       const startTime = new Date('2022-01-01 12:00:00');
-      const requireMinute = 20;
+      const estimatedMinutes = 20;
 
       // when - then
       await expect(
@@ -143,7 +143,7 @@ describe('ReservationService', () => {
           row,
           column,
           startTime,
-          requireMinute,
+          estimatedMinutes,
         }),
       ).rejects.toThrow(Exceptions.shopNotFoundError);
       expect(shopService.getShopById).toBeCalledTimes(1);
@@ -162,7 +162,7 @@ describe('ReservationService', () => {
       const row = 0;
       const column = 0;
       const startTime = new Date('2022-01-01 12:00:00');
-      const requireMinute = 20;
+      const estimatedMinutes = 20;
 
       // when - then
       await expect(
@@ -173,7 +173,7 @@ describe('ReservationService', () => {
           row,
           column,
           startTime,
-          requireMinute,
+          estimatedMinutes,
         }),
       ).rejects.toThrow(Exceptions.menuNotFoundError);
       expect(shopService.getShopById).toBeCalledTimes(1);
@@ -195,7 +195,7 @@ describe('ReservationService', () => {
       const row = 0;
       const column = 0;
       const startTime = new Date('2022-01-01 12:00:00');
-      const requireMinute = 20;
+      const estimatedMinutes = 20;
 
       // when - then
       await expect(
@@ -206,7 +206,7 @@ describe('ReservationService', () => {
           row,
           column,
           startTime,
-          requireMinute,
+          estimatedMinutes,
         }),
       ).rejects.toThrow(Exceptions.alreadyReservedError);
       expect(shopService.getShopById).toBeCalledTimes(1);
