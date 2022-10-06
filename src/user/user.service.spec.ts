@@ -62,6 +62,22 @@ describe('UserService', () => {
     });
   });
 
+  describe('getUserByEmail()', () => {
+    it('normal case', async () => {
+      // given
+      const email = 'pirit.jeong@kyojs.com';
+
+      // when
+      const result = await service.getUserByEmail(email);
+
+      // then
+      const user = userData()[0];
+      expect(result).toEqual(user);
+      expect(userRepository.getOneByEmail).toBeCalledTimes(1);
+      expect(userRepository.getOneByEmail).toBeCalledWith(email);
+    });
+  });
+
   describe('addUser()', () => {
     it('normal case', async () => {
       // given
