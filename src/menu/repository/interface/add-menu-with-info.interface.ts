@@ -6,7 +6,7 @@ export interface IAddMenu {
   name: string;
   includeCutOption: boolean;
   includeShampooOption: boolean;
-  requireMinute?: number;
+  estimatedMinutes?: number;
   price: number;
   description?: string;
   discountRate?: number;

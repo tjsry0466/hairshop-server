@@ -54,7 +54,7 @@ export class Menu {
 
   @Field(() => Int, { nullable: true, description: '시술 소요 시간' })
   @Column({ nullable: true })
-  requireMinute?: number;
+  estimatedMinutes?: number;
 
   @Field(() => Gender, { nullable: true, description: '성별' })
   @Column({ type: 'enum', enum: Gender, nullable: true })

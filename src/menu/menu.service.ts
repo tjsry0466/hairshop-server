@@ -12,6 +12,10 @@ export class MenuService {
     private readonly shopService: ShopService,
   ) {}
 
+  async getMenuById(id: number) {
+    return this.menuRepository.getOneById(id);
+  }
+
   async addMenu(args: IAddMenu) {
     const shop = await this.shopService.getShopById(args.shopId);
     if (!shop) {

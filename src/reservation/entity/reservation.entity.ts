@@ -46,15 +46,19 @@ export class Reservation {
 
   @Field()
   @Column('date')
+  reservationDate: Date;
+
+  @Field()
+  @Column('datetime')
   startTime: Date;
 
   @Field()
-  @Column('date')
+  @Column('datetime')
   endTime: Date;
 
   @Field(() => Int)
   @Column('int', { unsigned: true })
-  requireMinute: number;
+  estimatedMinutes: number;
 
   @Field()
   @Column('boolean')
@@ -67,6 +71,10 @@ export class Reservation {
   @Field()
   @Column('boolean')
   isDelayed: boolean;
+
+  @Field(() => Int, { nullable: true })
+  @Column('int', { unsigned: true, nullable: true })
+  canceledBy?: number;
 
   @CreateDateColumn()
   createdAt: Date;

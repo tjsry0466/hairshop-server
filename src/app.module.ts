@@ -6,12 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { isProd } from './common/constant';
 import { TypeORMExceptionFilter } from './common/filter/typeorm-exception.filter';
 import { DesignerModule } from './designer/designer.module';
 import { MenuModule } from './menu/menu.module';
+import { ReservationModule } from './reservation/reservation.module';
 import { SeatModule } from './seat/seat.module';
 import { ShopModule } from './shop/shop.module';
 import { UserModule } from './user/user.module';
@@ -38,10 +38,10 @@ import { UserModule } from './user/user.module';
     DesignerModule,
     SeatModule,
     MenuModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_FILTER,
       useClass: TypeORMExceptionFilter,

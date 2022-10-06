@@ -15,6 +15,7 @@ import { LoginArgs } from './dto';
 describe('AuthService', () => {
   let service: AuthService;
   let userService: UserService;
+  let jwtService: JwtService;
 
   beforeEach(async () => {
     jest.useFakeTimers().setSystemTime(new Date('2022-05-10 16:00:00'));
@@ -35,10 +36,7 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
     userService = module.get<UserService>(UserService);
-    jest.spyOn(service, 'signJsonWebToken').mockReturnValue({
-      accessToken: jwtData().accessToken,
-      refreshToken: jwtData().refreshToken,
-    });
+    jwtService = module.get<JwtService>(JwtService);
   });
 
   afterEach(() => {
@@ -47,6 +45,28 @@ describe('AuthService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('signJsonWebToken()', () => {
+    it('normal case', () => {
+      // given
+      const userId = 1;
+      const role = Role.USER;
+
+      // when
+      const result = service.signJsonWebToken(userId, role);
+
+      expect(result).toEqual({
+        accessToken: jwtData().accessToken,
+        refreshToken: jwtData().refreshToken,
+      });
+      expect(jwtService.sign).toBeCalledTimes(2);
+      expect(jwtService.sign).toBeCalledWith({ _id: userId, _role: role }, { expiresIn: '10m' });
+      expect(jwtService.sign).toBeCalledWith(
+        { _id: userId, _role: role, _refresh: true },
+        { expiresIn: '7d' },
+      );
+    });
   });
 
   describe('loginByRefreshToken', () => {
@@ -91,17 +111,33 @@ describe('AuthService', () => {
       await expect(service.login(loginArgs)).rejects.toThrow(Exceptions.userNotFoundError);
       expect(userService.getUserForLogin).toBeCalledTimes(1);
       expect(userService.getUserForLogin).toBeCalledWith(loginArgs.email);
+      expect(bcrypt.compare).not.toBeCalled();
+    });
+
+    it('비빌번호가 틀린 경우', async () => {
+      // given
+      const loginArgs: LoginArgs = {
+        email: 'pirit@kyojs.com',
+        password: '9999',
+      };
+
+      // when - then
+      await expect(service.login(loginArgs)).rejects.toThrow(Exceptions.invalidPasswordError);
+      expect(userService.getUserForLogin).toBeCalledTimes(1);
+      expect(userService.getUserForLogin).toBeCalledWith(loginArgs.email);
+      expect(bcrypt.compare).toBeCalledTimes(1);
+      expect(bcrypt.compare).toBeCalledWith(loginArgs.password, '12345678');
     });
 
     it('정상 로그인', async () => {
       // given
-      const loginArg: LoginArgs = {
+      const loginArgs: LoginArgs = {
         email: 'pirit@kyojs.com',
         password: '12345678',
       };
 
       // when
-      const result = await service.login(loginArg);
+      const result = await service.login(loginArgs);
 
       // then
       const jwt = jwtData();
@@ -110,13 +146,19 @@ describe('AuthService', () => {
         refreshToken: jwt.refreshToken,
       });
       expect(userService.getUserForLogin).toBeCalledTimes(1);
-      expect(userService.getUserForLogin).toBeCalledWith(loginArg.email);
+      expect(userService.getUserForLogin).toBeCalledWith(loginArgs.email);
+      expect(bcrypt.compare).toBeCalledTimes(1);
+      expect(bcrypt.compare).toBeCalledWith(loginArgs.password, '12345678');
     });
   });
 
   describe('signup()', () => {
     it('normal case', async () => {
       // given
+      jest.spyOn(service, 'signJsonWebToken').mockReturnValue({
+        accessToken: jwtData().accessToken,
+        refreshToken: jwtData().refreshToken,
+      });
       jest.spyOn(userService, 'getUserByEmail').mockResolvedValue(undefined);
       const signupArgs = {
         email: 'pirit@kyojs.com',
@@ -143,6 +185,10 @@ describe('AuthService', () => {
 
     it('동일한 이메일이 존재하는 경우', async () => {
       // given
+      jest.spyOn(service, 'signJsonWebToken').mockReturnValue({
+        accessToken: jwtData().accessToken,
+        refreshToken: jwtData().refreshToken,
+      });
       const signupArgs = {
         email: 'pirit.test@kyojs.com',
         password: '12345678',
