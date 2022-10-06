@@ -120,6 +120,7 @@ describe('UserService', () => {
       expect(result).toBe(true);
       expect(userRepository.resetPassword).toBeCalledWith(id, hashedPassword);
       expect(userRepository.resetPassword).toBeCalledTimes(1);
+      expect(bcrypt.hash).toBeCalledTimes(1);
     });
 
     it('should fail resetting password if the given user does not exist', async function () {
@@ -135,6 +136,7 @@ describe('UserService', () => {
       await expect(service.resetPassword(args)).rejects.toThrow(Exceptions.userNotFoundError);
       expect(userRepository.resetPassword).not.toBeCalled();
       expect(userRepository.getOneById).toBeCalledTimes(1);
+      expect(bcrypt.hash).toBeCalledTimes(1);
     });
 
     it('should fail when the given password is wrong', async function () {
@@ -150,6 +152,7 @@ describe('UserService', () => {
       await expect(service.resetPassword(args)).rejects.toThrow(Exceptions.invalidPasswordError);
       expect(userRepository.getOneById).toBeCalledTimes(1);
       expect(userRepository.resetPassword).not.toBeCalled();
+      expect(bcrypt.hash).toBeCalledTimes(1);
     });
   });
 });
