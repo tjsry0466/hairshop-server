@@ -3,7 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcrypt';
 
 import { jwtData } from '../../test/data/jwt.data.mock';
-import { userData } from '../../test/data/user.data.mock';
 import { MockJwtService } from '../../test/service/jwt.service.mock';
 import { MockUserService } from '../../test/service/user.service.mock';
 import { Role } from '../common/enum';
@@ -119,8 +118,12 @@ describe('AuthService', () => {
     it('normal case', async () => {
       // given
       jest.spyOn(userService, 'getUserByEmail').mockResolvedValue(undefined);
-      const { id, ...user } = userData()[0];
-      const signupArgs = user;
+      const signupArgs = {
+        email: 'pirit@kyojs.com',
+        password: '12345678',
+        name: 'pirit',
+        role: Role.USER,
+      };
 
       // when
       const signupOutput = await service.signup(signupArgs);
@@ -134,7 +137,7 @@ describe('AuthService', () => {
       expect(signupOutput).toEqual({
         accessToken: jwtData().accessToken,
         refreshToken: jwtData().refreshToken,
-        user: { id, ...user, password: 'hashedPassword' },
+        user: { id: 1, ...signupArgs, password: 'hashedPassword' },
       });
     });
 
@@ -144,6 +147,7 @@ describe('AuthService', () => {
         email: 'pirit.test@kyojs.com',
         password: '12345678',
         name: 'pirit',
+        role: Role.USER,
       };
 
       // when - then
