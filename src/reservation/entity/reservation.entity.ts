@@ -72,6 +72,10 @@ export class Reservation {
   @Column('boolean')
   isDelayed: boolean;
 
+  @Field(() => Int, { nullable: true })
+  @Column('int', { unsigned: true, nullable: true })
+  canceledBy?: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
