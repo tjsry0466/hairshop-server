@@ -28,7 +28,6 @@ export class UserRepository extends Repository<User> {
   }
 
   async resetPassword(id: number, password: string) {
-    const user = await this.findOne(id);
-    return this.save({ ...user, password: password });
+    return this.createQueryBuilder().update().set({ password }).where('id = :id', { id }).execute();
   }
 }
