@@ -155,8 +155,8 @@ describe('UserService', () => {
       await expect(service.resetPassword(args, user)).rejects.toThrow(Exceptions.userNotFoundError);
       expect(userRepository.resetPassword).not.toBeCalled();
       expect(userRepository.getOneById).toBeCalledTimes(1);
-      expect(jest.spyOn(bcrypt, 'compare')).not.toBeCalled();
-      expect(jest.spyOn(bcrypt, 'hash')).not.toBeCalled();
+      expect(bcrypt.compare).not.toBeCalled();
+      expect(bcrypt.hash).not.toBeCalled();
     });
 
     it('should fail when the given password is wrong', async function () {
@@ -183,7 +183,7 @@ describe('UserService', () => {
       expect(userRepository.resetPassword).not.toBeCalled();
       expect(bcrypt.compare).toBeCalledTimes(1);
       expect(bcrypt.compare).toBeCalledWith(args.password, password);
-      expect(jest.spyOn(bcrypt, 'hash')).not.toBeCalled();
+      expect(bcrypt.hash).not.toBeCalled();
     });
   });
 });
