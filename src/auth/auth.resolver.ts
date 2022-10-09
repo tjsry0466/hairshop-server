@@ -37,7 +37,11 @@ export class AuthResolver {
 
   @Roles(Role.USER)
   @Mutation(() => Boolean)
-  async resetPassword(@Args() args: ResetPasswordArgs) {
-    return this.userService.resetPassword(args);
+  async resetPassword(@Args() args: ResetPasswordArgs, @RequestInfo() req: Required<IRequest>) {
+    if (!req.user.refresh) {
+      throw new UnauthorizedException();
+    }
+
+    return this.userService.resetPassword(args, req.user);
   }
 }

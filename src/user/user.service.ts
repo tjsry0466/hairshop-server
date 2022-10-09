@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 import { saltCost } from '../auth/constant';
 import { Exceptions } from '../common/exceptions';
+import * as request from '../common/interface/request';
 import { IAddUser } from './interface/add-user.interface';
 import { IResetPassword } from './interface/reset-password.interface';
 import { UserRepository } from './repository';
@@ -29,20 +30,20 @@ export class UserService {
     return result;
   }
 
-  async resetPassword(args: IResetPassword) {
-    const { userId, password, newPassword } = args;
-    const user = await this.userRepository.getOneById(userId);
-    if (!user) {
+  async resetPassword(args: IResetPassword, user: request.IUser) {
+    const { password, newPassword } = args;
+    const isUser = await this.userRepository.getOneById(user.id);
+    if (!isUser) {
       throw Exceptions.userNotFoundError;
     }
 
-    const isPasswordMatching = await bcrypt.compare(password, user.password);
+    const isPasswordMatching = await bcrypt.compare(password, isUser.password);
     if (!isPasswordMatching) {
       throw Exceptions.invalidPasswordError;
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, saltCost);
-    await this.userRepository.resetPassword(userId, hashedPassword);
+    await this.userRepository.resetPassword(user.id, hashedPassword);
 
     return true;
   }
