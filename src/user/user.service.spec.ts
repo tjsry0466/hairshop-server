@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 import { userData } from '../../test/data/user.data.mock';
 import { MockUserRepository } from '../../test/repository/user.repository.mock';
+import { saltCost } from '../auth/constant';
 import { Role } from '../common/enum';
 import { Exceptions } from '../common/exceptions';
 import { IUser } from '../common/interface';
@@ -133,6 +134,7 @@ describe('UserService', () => {
       expect(userRepository.resetPassword).toBeCalledWith(user.id, hashedPassword);
       expect(userRepository.resetPassword).toBeCalledTimes(1);
       expect(bcrypt.hash).toBeCalledTimes(1);
+      expect(bcrypt.hash).toBeCalledWith(args.newPassword, saltCost);
       expect(bcrypt.compare).toBeCalledTimes(1);
       expect(bcrypt.compare).toBeCalledWith(args.password, password);
     });
