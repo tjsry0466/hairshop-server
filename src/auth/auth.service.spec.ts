@@ -103,8 +103,8 @@ describe('AuthService', () => {
       // given
       jest.spyOn(userService, 'getUserForLogin').mockResolvedValue(undefined);
       const loginArgs: LoginArgs = {
-        email: 'noUser@email.com',
-        password: '1234',
+        email: 'pirit@kyojs.com',
+        password: '9999',
       };
 
       // when - then
