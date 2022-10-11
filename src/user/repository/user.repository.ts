@@ -26,4 +26,8 @@ export class UserRepository extends Repository<User> {
   async addUser(args: IAddUser) {
     return this.save(this.create(args));
   }
+
+  async resetPassword(id: number, password: string) {
+    return this.createQueryBuilder().update().set({ password }).where('id = :id', { id }).execute();
+  }
 }

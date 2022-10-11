@@ -11,6 +11,13 @@ export const userDataObject = [
     name: 'pirit',
     role: Role.USER,
   },
+  {
+    id: 2,
+    email: 'IamHereToo@gmail.com',
+    password: '$2a$10$xxGdIYsahxU80tT.XyVTCuD/NRrCTQmIybkzS6FMVfuj.TDTswRPW',
+    name: 'pirit',
+    role: Role.USER,
+  },
 ];
 
 export const userData = () => userDataObject.map((obj) => plainToClass(User, obj));

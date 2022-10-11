@@ -3,7 +3,12 @@ import * as bcrypt from 'bcrypt';
 
 import { userData } from '../../test/data/user.data.mock';
 import { MockUserRepository } from '../../test/repository/user.repository.mock';
+import { saltCost } from '../auth/constant';
+import { Role } from '../common/enum';
+import { Exceptions } from '../common/exceptions';
+import { IUser } from '../common/interface';
 import { IAddUser } from './interface/add-user.interface';
+import { IResetPassword } from './interface/reset-password.interface';
 import { UserRepository } from './repository';
 import { UserService } from './user.service';
 
@@ -49,13 +54,13 @@ describe('UserService', () => {
   describe('getUserById()', () => {
     it('normal case', async () => {
       // given
-      const id = 1;
+      const id = 2;
 
       // when
       const result = await service.getUserById(id);
 
       // then
-      const user = userData()[0];
+      const user = userData()[1];
       expect(result).toEqual(user);
       expect(userRepository.getOneById).toBeCalledTimes(1);
       expect(userRepository.getOneById).toBeCalledWith(id);
@@ -95,6 +100,92 @@ describe('UserService', () => {
         password: hashedPassword,
       });
       expect(addUserOutput).toEqual({ id, ...user, password: hashedPassword });
+    });
+  });
+
+  describe('resetPassword()', () => {
+    beforeEach(async () => {
+      jest.spyOn(bcrypt, 'compare').mockClear();
+      jest.spyOn(bcrypt, 'hash').mockClear();
+    });
+    it('should su cceed resetting the password', async () => {
+      //given
+      const { password } = userData()[1];
+      const user: IUser = {
+        id: 2,
+        role: Role.USER,
+        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
+        refresh: true,
+      };
+
+      const args: IResetPassword = {
+        password: '12345678',
+        newPassword: '87654321',
+      };
+      const hashedPassword = '$2a$10$AoYROAsFy0M4R1pTbyjY4upho4rSPQ4xGmMjfqeE9ZAh6NUzCUpU2';
+      jest.spyOn(bcrypt, 'compare').mockImplementation(() => true);
+      jest.spyOn(bcrypt, 'hash').mockImplementation(() => hashedPassword);
+
+      //when
+      const result = await service.resetPassword(args, user);
+
+      //then
+      expect(result).toBe(true);
+      expect(userRepository.resetPassword).toBeCalledWith(user.id, hashedPassword);
+      expect(userRepository.resetPassword).toBeCalledTimes(1);
+      expect(bcrypt.hash).toBeCalledTimes(1);
+      expect(bcrypt.hash).toBeCalledWith(args.newPassword, saltCost);
+      expect(bcrypt.compare).toBeCalledTimes(1);
+      expect(bcrypt.compare).toBeCalledWith(args.password, password);
+    });
+
+    it('should fail resetting password if the given user does not exist', async function () {
+      const user: IUser = {
+        id: 100,
+        role: Role.USER,
+        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
+        refresh: true,
+      };
+      //given
+      jest.spyOn(userRepository, 'getOneById').mockResolvedValue(undefined);
+      const args: IResetPassword = {
+        password: '12345678',
+        newPassword: '87654321',
+      };
+
+      //when - then
+      await expect(service.resetPassword(args, user)).rejects.toThrow(Exceptions.userNotFoundError);
+      expect(userRepository.resetPassword).not.toBeCalled();
+      expect(userRepository.getOneById).toBeCalledTimes(1);
+      expect(bcrypt.compare).not.toBeCalled();
+      expect(bcrypt.hash).not.toBeCalled();
+    });
+
+    it('should fail when the given password is wrong', async function () {
+      const { password } = userData()[1];
+      const user: IUser = {
+        id: 2,
+        role: Role.USER,
+        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
+        refresh: true,
+      };
+
+      //given
+      const args: IResetPassword = {
+        password: 'wrong password',
+        newPassword: '87654321',
+      };
+      jest.spyOn(bcrypt, 'compare').mockImplementation(() => false);
+
+      //when - then
+      await expect(service.resetPassword(args, user)).rejects.toThrow(
+        Exceptions.invalidPasswordError,
+      );
+      expect(userRepository.getOneById).toBeCalledTimes(1);
+      expect(userRepository.resetPassword).not.toBeCalled();
+      expect(bcrypt.compare).toBeCalledTimes(1);
+      expect(bcrypt.compare).toBeCalledWith(args.password, password);
+      expect(bcrypt.hash).not.toBeCalled();
     });
   });
 });
