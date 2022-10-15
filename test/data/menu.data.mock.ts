@@ -11,7 +11,7 @@ export const menuDataObject = [
     includeCutOption: true,
     includeShampooOption: true,
     price: 10000,
-    requireMinute: 20,
+    estimatedMinutes: 20,
     description: '아주 좋아요 !',
     discountRate: 20,
     gender: Gender.MALE,
