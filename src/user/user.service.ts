@@ -47,4 +47,19 @@ export class UserService {
 
     return true;
   }
+
+  async deleteUser(id: number, user: request.IUser) {
+    const isUser = await this.userRepository.getOneById(id);
+    if (!isUser) {
+      throw Exceptions.userNotFoundError;
+    }
+
+    if (user.role !== 'admin' && user.id !== id) {
+      throw Exceptions.notPermittedError;
+    }
+
+    await this.userRepository.deleteUser(id);
+
+    return true;
+  }
 }
