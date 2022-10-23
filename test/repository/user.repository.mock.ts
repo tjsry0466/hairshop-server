@@ -8,4 +8,7 @@ export const MockUserRepository = () => ({
   resetPassword: jest.fn().mockResolvedValue({
     affected: 1,
   }),
+  deleteUser: jest.fn().mockResolvedValue({
+    affected: 1,
+  }),
 });

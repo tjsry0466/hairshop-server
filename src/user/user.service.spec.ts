@@ -188,4 +188,76 @@ describe('UserService', () => {
       expect(bcrypt.hash).not.toBeCalled();
     });
   });
+
+  describe('delete user', () => {
+    it('should succeed deleting a user when the admin is logged in', async function () {
+      //given
+      const { id } = userData()[0];
+      const user: IUser = {
+        id: 2,
+        role: Role.ADMIN,
+        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
+        refresh: true,
+      };
+      //when
+      const result = await service.deleteUser(id, user);
+      //then
+      expect(result).toBe(true);
+      expect(userRepository.getOneById).toBeCalledTimes(1);
+    });
+
+    it('should succeed deleting a user when the user is logged in', async function () {
+      //given
+      const { id } = userData()[0];
+      const user: IUser = {
+        id: 1,
+        role: Role.USER,
+        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
+        refresh: true,
+      };
+      //when
+      const result = await service.deleteUser(id, user);
+      //then
+      expect(result).toBe(true);
+      expect(userRepository.getOneById).toBeCalledTimes(1);
+      expect(userRepository.deleteUser).toBeCalledTimes(1);
+      expect(userRepository.deleteUser).toBeCalledWith(user.id);
+    });
+
+    it('should fail deleting a user when unauthorized', async function () {
+      //given
+      const { id, role } = userData()[0];
+      const user: IUser = {
+        id: 2,
+        role,
+        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
+        refresh: true,
+      };
+
+      jest.spyOn(userRepository, 'getOneById').mockResolvedValue({ ...userData()[1] });
+
+      //when-then
+      // expect(userRepository.getOneById).toBeCalledTimes(1);
+      // expect(userRepository.getOneById).toBeCalledWith(user.id);
+      await expect(service.deleteUser(id, user)).rejects.toThrow(Exceptions.notPermittedError);
+    });
+
+    it('should fail deleting a user when the user does not exist ', async function () {
+      //given
+      const idThatDoesNotExist = 1000;
+      const user: IUser = {
+        id: 2,
+        role: Role.ADMIN,
+        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
+        refresh: true,
+      };
+      jest.spyOn(userRepository, 'getOneById').mockResolvedValue(undefined);
+      //when-then
+      // expect(userRepository.getOneById).toBeCalledWith(user.id);
+      // expect(userRepository.getOneById).toBeCalledTimes(1);
+      await expect(service.deleteUser(idThatDoesNotExist, user)).rejects.toThrow(
+        Exceptions.userNotFoundError,
+      );
+    });
+  });
 });
