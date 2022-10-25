@@ -200,7 +200,7 @@ describe('UserService', () => {
         refresh: true,
       };
       //when
-      const result = await service.deleteUser(id, user);
+      const result = await service.withdrawUser(id, user);
       //then
       expect(result).toBe(true);
       expect(userRepository.getOneById).toBeCalledTimes(1);
@@ -216,12 +216,12 @@ describe('UserService', () => {
         refresh: true,
       };
       //when
-      const result = await service.deleteUser(id, user);
+      const result = await service.withdrawUser(id, user);
       //then
       expect(result).toBe(true);
       expect(userRepository.getOneById).toBeCalledTimes(1);
-      expect(userRepository.deleteUser).toBeCalledTimes(1);
-      expect(userRepository.deleteUser).toBeCalledWith(user.id);
+      expect(userRepository.withdrawUser).toBeCalledTimes(1);
+      expect(userRepository.withdrawUser).toBeCalledWith(user.id);
     });
 
     it('should fail deleting a user when unauthorized', async function () {
@@ -237,7 +237,7 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'getOneById').mockResolvedValue({ ...userData()[1] });
 
       //when-then
-      await expect(service.deleteUser(id, user)).rejects.toThrow(Exceptions.notPermittedError);
+      await expect(service.withdrawUser(id, user)).rejects.toThrow(Exceptions.notPermittedError);
     });
 
     it('should fail deleting a user when the user does not exist ', async function () {
@@ -251,7 +251,7 @@ describe('UserService', () => {
       };
       jest.spyOn(userRepository, 'getOneById').mockResolvedValue(undefined);
       //when-then
-      await expect(service.deleteUser(idThatDoesNotExist, user)).rejects.toThrow(
+      await expect(service.withdrawUser(idThatDoesNotExist, user)).rejects.toThrow(
         Exceptions.userNotFoundError,
       );
     });

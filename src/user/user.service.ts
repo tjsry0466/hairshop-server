@@ -48,7 +48,7 @@ export class UserService {
     return true;
   }
 
-  async deleteUser(id: number, user: request.IUser) {
+  async withdrawUser(id: number, user: request.IUser) {
     const isUser = await this.userRepository.getOneById(id);
     if (!isUser) {
       throw Exceptions.userNotFoundError;
@@ -58,7 +58,7 @@ export class UserService {
       throw Exceptions.notPermittedError;
     }
 
-    await this.userRepository.deleteUser(id);
+    await this.userRepository.withdrawUser(id);
 
     return true;
   }
