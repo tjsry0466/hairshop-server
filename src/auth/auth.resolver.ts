@@ -40,4 +40,10 @@ export class AuthResolver {
   async resetPassword(@Args() args: ResetPasswordArgs, @RequestInfo() req: Required<IRequest>) {
     return this.userService.resetPassword(args, req.user);
   }
+
+  @Roles(Role.USER)
+  @Mutation(() => Boolean)
+  async withdrawUser(@Args() id: number) {
+    return this.userService.withdrawUser(id);
+  }
 }

@@ -188,4 +188,30 @@ describe('UserService', () => {
       expect(bcrypt.hash).not.toBeCalled();
     });
   });
+
+  describe('delete user', () => {
+    it('should succeed deleting a user when the user is logged in', async function () {
+      //given
+      const { id } = userData()[0];
+      //when
+      const result = await service.withdrawUser(id);
+      //then
+      expect(result).toBe(true);
+      expect(userRepository.getOneById).toBeCalledTimes(1);
+      expect(userRepository.withdrawUser).toBeCalledTimes(1);
+      expect(userRepository.withdrawUser).toBeCalledWith(id);
+    });
+
+    it('should fail deleting a user when the user does not exist ', async function () {
+      //given
+      const idThatDoesNotExist = 1000;
+
+      jest.spyOn(userRepository, 'getOneById').mockResolvedValue(undefined);
+
+      //when-then
+      await expect(service.withdrawUser(idThatDoesNotExist)).rejects.toThrow(
+        Exceptions.userNotFoundError,
+      );
+    });
+  });
 });

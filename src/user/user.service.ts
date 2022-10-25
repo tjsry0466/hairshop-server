@@ -47,4 +47,15 @@ export class UserService {
 
     return true;
   }
+
+  async withdrawUser(id: number) {
+    const user = await this.userRepository.getOneById(id);
+    if (!user) {
+      throw Exceptions.userNotFoundError;
+    }
+
+    const { affected } = await this.userRepository.withdrawUser(id);
+
+    return typeof affected === 'number' ? affected > 0 : false;
+  }
 }

@@ -30,4 +30,8 @@ export class UserRepository extends Repository<User> {
   async resetPassword(id: number, password: string) {
     return this.createQueryBuilder().update().set({ password }).where('id = :id', { id }).execute();
   }
+
+  async withdrawUser(id: number) {
+    return this.softDelete(id);
+  }
 }
