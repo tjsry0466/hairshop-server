@@ -58,8 +58,8 @@ export class UserService {
       throw Exceptions.notPermittedError;
     }
 
-    await this.userRepository.withdrawUser(id);
+    const { affected } = await this.userRepository.withdrawUser(id);
 
-    return true;
+    return typeof affected === 'number' ? affected > 0 : false;
   }
 }
