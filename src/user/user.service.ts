@@ -48,14 +48,10 @@ export class UserService {
     return true;
   }
 
-  async withdrawUser(id: number, user: request.IUser) {
-    const isUser = await this.userRepository.getOneById(id);
-    if (!isUser) {
+  async withdrawUser(id: number) {
+    const user = await this.userRepository.getOneById(id);
+    if (!user) {
       throw Exceptions.userNotFoundError;
-    }
-
-    if (user.role !== 'admin' && user.id !== id) {
-      throw Exceptions.notPermittedError;
     }
 
     const { affected } = await this.userRepository.withdrawUser(id);

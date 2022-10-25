@@ -190,68 +190,26 @@ describe('UserService', () => {
   });
 
   describe('delete user', () => {
-    it('should succeed deleting a user when the admin is logged in', async function () {
-      //given
-      const { id } = userData()[0];
-      const user: IUser = {
-        id: 2,
-        role: Role.ADMIN,
-        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
-        refresh: true,
-      };
-      //when
-      const result = await service.withdrawUser(id, user);
-      //then
-      expect(result).toBe(true);
-      expect(userRepository.getOneById).toBeCalledTimes(1);
-    });
-
     it('should succeed deleting a user when the user is logged in', async function () {
       //given
       const { id } = userData()[0];
-      const user: IUser = {
-        id: 1,
-        role: Role.USER,
-        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
-        refresh: true,
-      };
       //when
-      const result = await service.withdrawUser(id, user);
+      const result = await service.withdrawUser(id);
       //then
       expect(result).toBe(true);
       expect(userRepository.getOneById).toBeCalledTimes(1);
       expect(userRepository.withdrawUser).toBeCalledTimes(1);
-      expect(userRepository.withdrawUser).toBeCalledWith(user.id);
-    });
-
-    it('should fail deleting a user when unauthorized', async function () {
-      //given
-      const { id, role } = userData()[0];
-      const user: IUser = {
-        id: 2,
-        role,
-        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
-        refresh: true,
-      };
-
-      jest.spyOn(userRepository, 'getOneById').mockResolvedValue({ ...userData()[1] });
-
-      //when-then
-      await expect(service.withdrawUser(id, user)).rejects.toThrow(Exceptions.notPermittedError);
+      expect(userRepository.withdrawUser).toBeCalledWith(id);
     });
 
     it('should fail deleting a user when the user does not exist ', async function () {
       //given
       const idThatDoesNotExist = 1000;
-      const user: IUser = {
-        id: 2,
-        role: Role.ADMIN,
-        exp: 1652416989, // 2022년 5월 13일 금요일 13:43:09
-        refresh: true,
-      };
+
       jest.spyOn(userRepository, 'getOneById').mockResolvedValue(undefined);
+
       //when-then
-      await expect(service.withdrawUser(idThatDoesNotExist, user)).rejects.toThrow(
+      await expect(service.withdrawUser(idThatDoesNotExist)).rejects.toThrow(
         Exceptions.userNotFoundError,
       );
     });

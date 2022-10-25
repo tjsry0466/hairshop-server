@@ -43,7 +43,7 @@ export class AuthResolver {
 
   @Roles(Role.USER)
   @Mutation(() => Boolean)
-  async withdrawUser(@Args() id: number, @RequestInfo() req: Required<IRequest>) {
-    return this.userService.withdrawUser(id, req.user);
+  async withdrawUser(@Args() id: number) {
+    return this.userService.withdrawUser(id);
   }
 }
