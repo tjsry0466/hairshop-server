@@ -237,8 +237,6 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'getOneById').mockResolvedValue({ ...userData()[1] });
 
       //when-then
-      // expect(userRepository.getOneById).toBeCalledTimes(1);
-      // expect(userRepository.getOneById).toBeCalledWith(user.id);
       await expect(service.deleteUser(id, user)).rejects.toThrow(Exceptions.notPermittedError);
     });
 
@@ -253,8 +251,6 @@ describe('UserService', () => {
       };
       jest.spyOn(userRepository, 'getOneById').mockResolvedValue(undefined);
       //when-then
-      // expect(userRepository.getOneById).toBeCalledWith(user.id);
-      // expect(userRepository.getOneById).toBeCalledTimes(1);
       await expect(service.deleteUser(idThatDoesNotExist, user)).rejects.toThrow(
         Exceptions.userNotFoundError,
       );
